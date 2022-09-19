@@ -1,0 +1,122 @@
+.header_text {
+  display: flex;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: "Codec Cold Trial", sans-serif;
+
+  &__title {
+    position: absolute;
+    display: flex;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: default;
+    top: 300px;
+    left: 200px;
+
+    &-char {
+      display: inline-block;
+    }
+
+    & .v {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1s 1 forwards;
+    }
+    & .i {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.2s 1 forwards;
+    }
+    & .r {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.4s 1 forwards;
+    }
+    & .t {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.6s 1 forwards;
+    }
+    & .u {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.8s 1 forwards;
+    }
+    & .a {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2s 1 forwards;
+    }
+    & .l {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.2s 1 forwards;
+    }
+    & .g {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.4s 1 forwards;
+    }
+    & .a2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.6s 1 forwards;
+    }
+    & .l2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.8s 1 forwards;
+    }
+    & .l3 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3s 1 forwards;
+    }
+    & .e {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.2s 1 forwards;
+    }
+    & .r2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.4s 1 forwards;
+    }
+    & .y {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.6s 1 forwards;
+    }
+  }
+
+  &__slogan {
+    font-size: 24px;
+    font-weight: normal;
+    opacity: 0;
+    cursor: default;
+    translate: -210px 20px;
+    animation: fadeIn 1s linear 4s 1 forwards;
+  }
+}
+
+@keyframes rotation {
+  0% {
+    visibility: hidden;
+  }
+  50% {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -6,7 +6,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
+  showHeader: boolean = true;
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  onDoor() {
+    this.showHeader = false;
+  }
 }

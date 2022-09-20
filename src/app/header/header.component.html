@@ -1,4 +1,4 @@
-<div class="header_text">
+<div class="header_text" *ngIf="showHeader">
   <span class="header_text__title">
     <span class="header_text__title-char v">V</span>
     <span class="header_text__title-char i">i</span>
@@ -18,7 +18,8 @@
   </span>
   <p class="header_text__slogan">Your place to discover art</p>
   <img
-    src="../../assets/door-icon.png"
+    (click)="onDoor()"
+    src="../../assets/door-icon-light.png"
     alt="A door icon to enter on the 3d render"
     class="header_text__img"
   />

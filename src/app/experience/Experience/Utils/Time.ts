@@ -1,12 +1,16 @@
-import { EventEmitter } from 'events';
+import { Injectable, Output } from '@angular/core';
+import { EventEmitter } from '@angular/core';
 
+@Injectable()
 export default class Time {
+  @Output() event: EventEmitter<string> = new EventEmitter();
+
   start: number;
   current: number;
   elapsed: number;
   delta: number;
 
-  constructor(private event: EventEmitter) {
+  constructor() {
     this.start = Date.now();
     this.current = this.start;
     this.elapsed = 0;

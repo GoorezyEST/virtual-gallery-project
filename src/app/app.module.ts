@@ -8,7 +8,7 @@ import { HeaderComponent } from './header/header.component';
 import { ProyectComponent } from './proyect/proyect.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent],
+  declarations: [AppComponent, HeaderComponent, ProyectComponent],
   imports: [BrowserModule, AppRouting, ThreeModule],
   providers: [],
   bootstrap: [AppComponent],

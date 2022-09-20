@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Experience } from './Experience/Experience';
 
 @Component({
@@ -6,8 +6,13 @@ import { Experience } from './Experience/Experience';
   templateUrl: './experience.component.html',
   styleUrls: ['./experience.component.scss'],
 })
-export class ExperienceComponent {
-  constructor(private experience: Experience) {
-    console.log(this.experience);
+export class ExperienceComponent implements AfterViewInit {
+  public experience!: Experience;
+  @ViewChild('myCanvas') canvasRef!: ElementRef<HTMLCanvasElement>;
+
+  constructor() {}
+
+  ngAfterViewInit(): void {
+    this.experience = new Experience(this.canvasRef.nativeElement);
   }
 }

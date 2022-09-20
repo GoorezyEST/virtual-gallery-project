@@ -5,6 +5,7 @@ import { AppRouting } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ThreeModule } from './experience/three.module';
 import { HeaderComponent } from './header/header.component';
+import { ProyectComponent } from './proyect/proyect.component';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],

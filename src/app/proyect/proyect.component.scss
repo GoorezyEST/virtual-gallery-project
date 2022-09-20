@@ -1,0 +1,122 @@
+.content {
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(230, 230, 230);
+}
+
+.project {
+  display: flex;
+  width: max-content;
+  padding: 32px;
+  border-radius: 12px;
+  background-color: rgba(230, 230, 230, 0.8);
+  transition: all 0.2s;
+
+  &:hover {
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.18);
+  }
+
+  &_left {
+    margin-right: 32px;
+    &__img {
+      width: 550px;
+      filter: brightness(0.6) blur(3px);
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+      transition: all 0.6s;
+
+      &:hover {
+        filter: brightness(1) blur(0px);
+      }
+    }
+  }
+
+  &_right {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 350px;
+
+    &__title {
+      color: rgba(40, 40, 40, 0.8);
+      font-family: "Codec Cold Trial", sans-serif;
+      font-weight: bold;
+      font-size: 32px;
+      translate: 0 -32px;
+    }
+
+    &__description {
+      color: rgba(40, 40, 40, 0.8);
+      font-family: "Codec Cold Trial", sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+    }
+
+    &__icons {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      translate: 0 64px;
+
+      &-door {
+        width: 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &:active {
+          transform: scale(0.9) translateY(-4px);
+        }
+      }
+
+      &-github {
+        width: 24px;
+        cursor: pointer;
+        transition: all 0.3s;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+
+        &:active {
+          transform: scale(0.9) translateY(-4px);
+        }
+      }
+    }
+
+    &__dev {
+      color: rgba(40, 40, 40, 0.8);
+      font-family: "Codec Cold Trial", sans-serif;
+      font-weight: normal;
+      font-size: 16px;
+      translate: 0 -64px;
+    }
+  }
+}
+
+hr {
+  position: absolute;
+  width: 156px;
+  outline: none;
+  border: 0;
+  height: 0.4px;
+  background-color: rgba(210, 210, 210, 0.2);
+}
+
+.hr-one {
+  translate: 0 -48px;
+}
+
+.hr-two {
+  translate: 0 -112px;
+}
+
+.hr-three {
+  translate: 0 64px;
+}

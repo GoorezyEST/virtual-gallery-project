@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CanvasComponent } from './canvas/canvas.component';
-
+import { ExperienceComponent } from './experience/experience.component';
 const routes: Routes = [
   { path: '', redirectTo: '/gallery', pathMatch: 'full' },
-  { path: 'gallery', component: CanvasComponent },
+  { path: 'gallery', component: ExperienceComponent },
 ];
 
 @NgModule({

@@ -12,17 +12,20 @@ import Time from './Utils/Time';
 import Camera from './Camera';
 import Renderer from './Renderer';
 import World from './World/World';
+import Controls from './World/Controls';
 
 @Injectable()
 export class Experience {
-  public resizeEvent: Subscription;
-  public timerEvent: Subscription;
-  public scene: THREE.Scene;
-  public camera: Camera;
-  public sizes: Sizes;
-  public timer: Time;
-  public renderer: Renderer;
-  public world: World;
+  resizeEvent: Subscription;
+  timerEvent: Subscription;
+  // intersectionEvent: Subscription;
+  scene: THREE.Scene;
+  camera: Camera;
+  sizes: Sizes;
+  timer: Time;
+  renderer: Renderer;
+  world: World;
+  controls: Controls;
 
   constructor(public canvas: HTMLCanvasElement) {
     //Utils
@@ -34,6 +37,7 @@ export class Experience {
     this.world = new World(this);
     this.camera = new Camera(this);
     this.renderer = new Renderer(this);
+    this.controls = new Controls(this);
 
     // Events Listening
     this.resizeEvent = this.sizes.event.subscribe(() => {
@@ -42,6 +46,12 @@ export class Experience {
     this.timerEvent = this.timer.event.subscribe(() => {
       this.update();
     });
+
+    // this.intersectionEvent = this.controls.intersectionEvent.subscribe(
+    //   (msg) => {
+    //     console.log(msg);
+    //   }
+    // );
   }
 
   resize() {
@@ -52,6 +62,7 @@ export class Experience {
 
   update() {
     this.camera.update();
+    this.controls.onIntersects();
     this.renderer.update();
     this.world.update();
   }

@@ -8,11 +8,7 @@ import Time from './Experience/Utils/Time';
 @NgModule({
   declarations: [ExperienceComponent],
   imports: [BrowserModule],
-  providers: [
-    Experience,
-    { provide: Sizes, useClass: Sizes },
-    { provide: Time, useClass: Time },
-  ],
+  providers: [Experience],
   bootstrap: [ExperienceComponent],
 })
 export class ThreeModule {}

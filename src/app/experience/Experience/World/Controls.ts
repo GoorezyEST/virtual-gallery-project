@@ -78,6 +78,7 @@ export default class Controls {
     }
 
     if (this.cubeClicked === true) {
+      console.log(this.camera.position, this.intersectionEvent);
       switch (this.intersectionEvent) {
         case 'faceOne':
           gsap.to(this.camera.position, {
@@ -124,13 +125,14 @@ export default class Controls {
           gsap.to(this.camera.position, {
             x: 0,
             y: 0,
-            z: this.distanceCameraToCube,
+            z: -this.distanceCameraToCube,
             ease: 'power2',
           });
           break;
         default:
           break;
       }
+      console.log(this.camera.position);
     }
 
     this.cubeClicked = false;

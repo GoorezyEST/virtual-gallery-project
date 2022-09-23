@@ -9,7 +9,7 @@
     />
   </section>
 
-  <section class="project">
+  <section class="project cube" #cube>
     <div class="project__top">
       <hr class="project__top__line" />
     </div>
@@ -19,70 +19,7 @@
           src="../../assets/eye-icon.png"
           alt="An eye icon"
           class="project__cover__icon--eye"
-        />
-      </div>
-      <img
-        src="../../assets/cover-dod.png"
-        alt="A photo of the project"
-        class="project__cover__photo"
-      />
-    </div>
-
-    <div class="project__description">
-      <h3 class="project__description__title">Data of Day</h3>
-      <p class="project__description__text">
-        Data of Day is an application in which the objective was to show the
-        most relevant weather data of the day, such as humidity or wind speed.
-        This project was my first approach to working with an API on my own.
-      </p>
-      <p class="project__description__text">
-        The main technology used to develop this project was the JavaScript
-        programming language.
-      </p>
-      <p class="project__description__developer">Developed by Goorezy</p>
-    </div>
-
-    <div class="project__technologies">
-      <img
-        src="../../assets/Tech-Icons/html-icon.png"
-        alt="A technology icon"
-        class="project__technologies__icon"
-      />
-      <img
-        src="../../assets/Tech-Icons/css-icon.png"
-        alt="A technology icon"
-        class="project__technologies__icon"
-      />
-      <img
-        src="../../assets/Tech-Icons/js-icon.png"
-        alt="A technology icon"
-        class="project__technologies__icon"
-      />
-    </div>
-
-    <div class="project__bottom">
-      <hr class="project__bottom__line" />
-    </div>
-
-    <div class="project__next">
-      <img
-        src="../../assets/arrowpontingdown.png"
-        alt="An arrow pointing down"
-        class="project__next__icon"
-      />
-    </div>
-  </section>
-
-  <section class="project">
-    <div class="project__top">
-      <hr class="project__top__line" />
-    </div>
-    <div class="project__cover">
-      <div class="project__cover__icon">
-        <img
-          src="../../assets/eye-icon.png"
-          alt="An eye icon"
-          class="project__cover__icon--eye"
+          (click)="toProyect(cube)"
         />
       </div>
       <img
@@ -104,7 +41,17 @@
         The main technology used in this project was the Angular framework. In
         order to better understand its concepts and functionalities.
       </p>
-      <p class="project__description__developer">Developed by Goorezy</p>
+      <div class="project__description__developer">
+        <p class="project__description__developer__name">
+          Developed by Goorezy
+        </p>
+        <img
+          src="../../assets/github-icon.png"
+          alt="GitHub icon"
+          class="project__description__developer__github"
+          (click)="toGitHubG()"
+        />
+      </div>
     </div>
 
     <div class="project__technologies">
@@ -132,14 +79,6 @@
 
     <div class="project__bottom">
       <hr class="project__bottom__line" />
-    </div>
-
-    <div class="project__next">
-      <img
-        src="../../assets/arrowpontingdown.png"
-        alt="An arrow pointing down"
-        class="project__next__icon"
-      />
     </div>
   </section>
 </body>

@@ -9,7 +9,12 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GalleryComponent } from './gallery/gallery.component';
 
 @NgModule({
-  declarations: [AppComponent, HeaderComponent, NotFoundComponent, GalleryComponent],
+  declarations: [
+    AppComponent,
+    HeaderComponent,
+    NotFoundComponent,
+    GalleryComponent,
+  ],
   imports: [BrowserModule, AppRouting, ThreeModule],
   providers: [],
   bootstrap: [AppComponent],

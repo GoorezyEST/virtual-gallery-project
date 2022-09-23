@@ -34,7 +34,7 @@ body {
     translate: 0 35px;
     width: 20px;
     animation: opacity 1.6s linear 3s infinite;
-    cursor: pointer;
+    cursor: default;
   }
 }
 
@@ -55,21 +55,21 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: repeat(2, 1fr) 100px;
-  grid-template-rows: 75px 1fr 75px 1fr;
-  padding: 0 25px 25px 25px;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 0 25px 0 25px;
   font-family: "Codec Cold Trial", sans-serif;
 
   &__top {
     grid-row: 1 / 2;
     grid-column: 1 / 4;
-    display: flex;
-    justify-content: end;
+    display: grid;
     align-items: center;
+    justify-items: center;
 
     &__line {
       z-index: 150;
       border: none;
-      width: 100%;
+      width: 80%;
       height: 1px;
       background-color: rgb(220, 220, 220);
     }
@@ -108,7 +108,7 @@ body {
     &__photo {
       width: 625px;
       height: 350px;
-      filter: brightness(0.4);
+      filter: brightness(0.4) blur(2px);
       cursor: default;
     }
   }
@@ -125,18 +125,36 @@ body {
       color: rgba(20, 20, 20, 0.8);
       letter-spacing: 1px;
       font-weight: bold;
+      cursor: default;
     }
 
-    &__description {
-      font-size: 24px;
-      color: rgba(20, 20, 20, 0.4);
+    &__text {
+      font-size: 14px;
+      color: rgba(20, 20, 20, 0.6);
       font-weight: normal;
+      cursor: default;
     }
 
     &__developer {
       font-size: 18px;
-      color: rgba(20, 20, 20, 0.3);
       font-weight: lighter;
+      display: flex;
+      align-items: center;
+
+      &__name {
+        color: rgba(20, 20, 20, 0.3);
+      }
+
+      &__github {
+        margin-left: 6px;
+        width: 20px;
+        transition: all 0.3s;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.15);
+        }
+      }
     }
   }
 
@@ -146,9 +164,15 @@ body {
     flex-direction: column;
     justify-content: space-evenly;
     align-items: center;
+    cursor: default;
 
     &__icon {
       width: 38px;
+      transition: all 0.6s;
+
+      &:hover {
+        transform: rotateY(360deg);
+      }
     }
   }
 
@@ -157,28 +181,14 @@ body {
     grid-column: 1 / 4;
     display: grid;
     align-items: center;
+    justify-items: center;
 
     &__line {
       z-index: 150;
       border: none;
-      width: 100%;
+      width: 80%;
       height: 1px;
       background-color: rgb(220, 220, 220);
-    }
-  }
-
-  &__next {
-    grid-row: 4 / 5;
-    grid-column: 1 / 4;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-
-    &__icon {
-      width: 24px;
-      animation: opacity 2s linear infinite;
-      cursor: pointer;
     }
   }
 }

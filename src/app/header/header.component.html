@@ -1,3 +1,16 @@
+<div class="links">
+  <p
+    class="links__home active-link"
+    (click)="toHome(about, linkOne, linkTwo)"
+    #linkOne
+  >
+    Home
+  </p>
+  <p class="links__about" (click)="toAbout(about, linkOne, linkTwo)" #linkTwo>
+    About Us
+  </p>
+</div>
+
 <div class="header_text">
   <span class="header_text__title">
     <span class="header_text__title-char v">V</span>
@@ -23,4 +36,19 @@
     alt="A door icon to enter on the 3d render"
     class="header_text__img"
   />
+</div>
+
+<div class="about hidden" #about>
+  <div class="about__first">
+    <p class="about__first__title">Who we are?</p>
+    <p class="about__first__desc">
+      Our names are Pieris and Goorezy, we are two full stack web developers
+      from Argentina.
+    </p>
+    <p class="about__first__inf">
+      Our main strength on this field is the design and the aesthetic part of
+      web development.
+    </p>
+    <hr class="about__first__line" />
+  </div>
 </div>

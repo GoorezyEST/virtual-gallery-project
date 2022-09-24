@@ -12,6 +12,12 @@ body {
   align-items: center;
   justify-content: center;
 
+  &__img {
+    @media screen and (max-width: 360px) {
+      width: 60%;
+    }
+  }
+
   &__button {
     font-family: "Codec Cold Trial", sans-serif;
     font-size: 24px;
@@ -23,6 +29,13 @@ body {
     border-bottom: 1px solid transparent;
     cursor: pointer;
     transition: all 0.3s;
+
+    @media screen and (max-width: 360px) {
+      font-size: 16px;
+    }
+    @media screen and (max-width: 300px) {
+      font-size: 12px;
+    }
 
     &:hover {
       border-bottom: 1px solid rgba(255, 255, 255, 0.5);

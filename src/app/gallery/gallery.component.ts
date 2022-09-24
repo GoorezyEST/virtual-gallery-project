@@ -100,8 +100,8 @@ export class GalleryComponent implements AfterViewInit {
   }
 
   toProyect(project: HTMLElement) {
-    if (project.classList.contains('cube')) {
-      this.router.navigate(['cube-project'], { relativeTo: this.route });
+    if (project.classList.contains('card')) {
+      this.router.navigate(['project-card'], { relativeTo: this.route });
     }
   }
 }

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 //Types
 import { Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ import World from './World/World';
 import Controls from './World/Controls';
 
 @Injectable()
-export class Experience {
+export class Experience implements OnDestroy {
   resizeEvent: Subscription;
   timerEvent: Subscription;
   // intersectionEvent: Subscription;
@@ -62,8 +62,12 @@ export class Experience {
 
   update() {
     this.camera.update();
-    this.controls.onIntersects();
+    // this.controls.onIntersects();
     this.renderer.update();
     this.world.update();
+  }
+  ngOnDestroy(): void {
+    this.resizeEvent.unsubscribe();
+    this.timerEvent.unsubscribe();
   }
 }

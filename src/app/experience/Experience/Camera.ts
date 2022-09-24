@@ -4,11 +4,11 @@ import { Experience } from './Experience';
 import { Sizes } from './Utils/Sizes';
 
 export default class Camera {
-  public sizes: Sizes;
-  public scene: THREE.Scene;
-  public canvas: HTMLCanvasElement;
-  public perspectiveCamera!: THREE.PerspectiveCamera;
-  public controls!: OrbitControls;
+  sizes: Sizes;
+  scene: THREE.Scene;
+  canvas: HTMLCanvasElement;
+  perspectiveCamera!: THREE.PerspectiveCamera;
+  controls!: OrbitControls;
 
   constructor(private experience: Experience) {
     this.sizes = this.experience.sizes;
@@ -26,8 +26,8 @@ export default class Camera {
       0.1,
       1000
     );
+    this.perspectiveCamera.position.set(0, 0, 5);
     this.scene.add(this.perspectiveCamera);
-    this.perspectiveCamera.position.z = 5;
   }
 
   setOrbitControls() {

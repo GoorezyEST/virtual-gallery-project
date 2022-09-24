@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import gsap from 'gsap';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { Experience } from '../Experience';
 
 @Injectable()
-export default class Controls {
+export default class Controls implements OnDestroy {
   camera: THREE.PerspectiveCamera;
   raycaster: THREE.Raycaster;
   pointer: THREE.Vector2;
@@ -12,6 +12,7 @@ export default class Controls {
   intersectionEvent!: string;
   cubeClicked: boolean;
   distanceCameraToCube: number;
+  onClickCallback: () => void;
 
   constructor(private experience: Experience) {
     this.camera = this.experience.camera.perspectiveCamera;
@@ -20,14 +21,14 @@ export default class Controls {
     this.raycaster = new THREE.Raycaster();
     this.pointer = new THREE.Vector2();
     this.cubeClicked = false;
-    // this.intersectionEvent = new EventEmitter();
-
-    // Set click event listener
-    window.addEventListener('click', () => {
+    this.onClickCallback = () => {
       if (this.intersectionEvent && this.intersectionEvent !== 'noIntersect') {
         this.cubeClicked = true;
       }
-    });
+    };
+
+    // Set click event listener
+    window.addEventListener('click', this.onClickCallback.bind(this));
 
     this.setMouseMoveListener();
   }
@@ -154,4 +155,8 @@ export default class Controls {
   resize() {}
 
   update() {}
+
+  ngOnDestroy(): void {
+    window.removeEventListener('click', this.onClickCallback);
+  }
 }

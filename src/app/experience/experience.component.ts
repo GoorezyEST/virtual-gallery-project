@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { EventManager } from '@angular/platform-browser';
 import { Experience } from './Experience/Experience';
 
 @Component({

@@ -16,16 +16,18 @@ import Controls from './World/Controls';
 
 @Injectable()
 export class Experience implements OnDestroy {
-  resizeEvent: Subscription;
-  timerEvent: Subscription;
+  resizeEvent!: Subscription;
+  timerEvent!: Subscription;
+  snakeGamePlayEvent!: Subscription;
   // intersectionEvent: Subscription;
   scene: THREE.Scene;
-  camera: Camera;
+  camera!: Camera;
   sizes: Sizes;
   timer: Time;
-  renderer: Renderer;
+  renderer!: Renderer;
   world: World;
-  controls: Controls;
+  controls!: Controls;
+  worldLoadedEvent: Subscription;
 
   constructor(public canvas: HTMLCanvasElement) {
     //Utils
@@ -35,23 +37,29 @@ export class Experience implements OnDestroy {
     // Basic Scene
     this.scene = new THREE.Scene();
     this.world = new World(this);
-    this.camera = new Camera(this);
-    this.renderer = new Renderer(this);
-    this.controls = new Controls(this);
 
-    // Events Listening
-    this.resizeEvent = this.sizes.event.subscribe(() => {
-      this.resize();
-    });
-    this.timerEvent = this.timer.event.subscribe(() => {
-      this.update();
-    });
+    this.worldLoadedEvent = this.world.cubeWorld.loadedEventEmitter.subscribe(
+      () => {
+        this.camera = new Camera(this);
+        this.renderer = new Renderer(this);
+        this.controls = new Controls(this);
 
-    // this.intersectionEvent = this.controls.intersectionEvent.subscribe(
-    //   (msg) => {
-    //     console.log(msg);
-    //   }
-    // );
+        // Events Listening
+        this.resizeEvent = this.sizes.event.subscribe(() => {
+          this.resize();
+        });
+        this.timerEvent = this.timer.event.subscribe(() => {
+          this.update();
+        });
+        this.snakeGamePlayEvent = this.controls.snakeGameOnRun.subscribe(
+          (msg) => {
+            console.log(msg);
+          }
+        );
+      }
+    );
+
+    // Only DEV code for Testing Purposes
   }
 
   resize() {
@@ -62,12 +70,13 @@ export class Experience implements OnDestroy {
 
   update() {
     this.camera.update();
-    // this.controls.onIntersects();
+    this.controls.onIntersects();
     this.renderer.update();
     this.world.update();
   }
   ngOnDestroy(): void {
     this.resizeEvent.unsubscribe();
     this.timerEvent.unsubscribe();
+    this.snakeGamePlayEvent.unsubscribe();
   }
 }

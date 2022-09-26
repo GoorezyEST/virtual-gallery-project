@@ -32,8 +32,6 @@ export class GalleryComponent implements AfterViewInit {
       '.project__technologies__icon'
     );
 
-    console.log(this.techIcon);
-
     this.scrolling = {
       enabled: true,
       events: 'scroll,wheel,touchmove,pointermove,'.split(','),
@@ -102,6 +100,10 @@ export class GalleryComponent implements AfterViewInit {
   toProyect(project: HTMLElement) {
     if (project.classList.contains('card')) {
       this.router.navigate(['project-card'], { relativeTo: this.route });
+    } else if (project.classList.contains('light')) {
+      this.router.navigate(['project-hover-lights'], {
+        relativeTo: this.route,
+      });
     }
   }
 }

@@ -28,7 +28,6 @@
         class="project__cover__photo"
       />
     </div>
-
     <div class="project__description">
       <h3 class="project__description__title">Presentation Card</h3>
       <p class="project__description__text">
@@ -53,7 +52,6 @@
         />
       </div>
     </div>
-
     <div class="project__technologies">
       <img
         src="../../assets/Tech-Icons/html-icon.png"
@@ -71,7 +69,77 @@
         class="project__technologies__icon"
       />
     </div>
+    <div class="project__bottom">
+      <hr class="project__bottom__line" />
+    </div>
+  </section>
 
+  <section class="project light" #light>
+    <div class="project__top">
+      <hr class="project__top__line" />
+    </div>
+    <div class="project__cover">
+      <div class="project__cover__icon">
+        <img
+          src="../../assets/eye-icon.png"
+          alt="An eye icon"
+          class="project__cover__icon--eye"
+          (click)="toProyect(light)"
+        />
+      </div>
+      <img
+        src="../../assets/cover-presentation-light.png"
+        alt="A photo of the project"
+        class="project__cover__photo"
+      />
+    </div>
+    <div class="project__description">
+      <h3 class="project__description__title">Hover Lights</h3>
+      <p class="project__description__text">
+        In this project I aim for another challenge based on good aesthetics and
+        creating a reusable effect in another project or website. I used pseudo
+        elements for the development of this project, as well as some keyframes.
+        Finally I added a small menu, which changes its display when the middle
+        button is clicked.
+      </p>
+      <p class="project__description__text">
+        SCSS was mainly used for the development of this small project. Although
+        some necessary features were added by implementing TypeScript code.
+      </p>
+      <div class="project__description__developer">
+        <p class="project__description__developer__name">
+          Developed by Goorezy
+        </p>
+        <img
+          src="../../assets/github-icon.png"
+          alt="GitHub icon"
+          class="project__description__developer__github"
+          (click)="toGitHubG()"
+        />
+      </div>
+    </div>
+    <div class="project__technologies">
+      <img
+        src="../../assets/Tech-Icons/html-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/css-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/sass-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/ts-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+    </div>
     <div class="project__bottom">
       <hr class="project__bottom__line" />
     </div>

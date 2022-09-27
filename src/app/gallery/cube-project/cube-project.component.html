@@ -1,0 +1,95 @@
+<body class="body">
+  <img
+    src="../../../assets/Project-Imgs/Cube/close.png"
+    alt="A close icon to go back to the gallery"
+    class="close"
+    (click)="returnGallery()"
+  />
+  <header>
+    <div class="header">
+      <button type="button" class="header_btn" (click)="animateBox()">
+        play
+      </button>
+      <form class="header_colors" (submit)="onSubmit($event)">
+        <input
+          type="text"
+          placeholder="Choose a color ..."
+          class="header_colors_input"
+          required
+        />
+        <span class="header_colors_input_error"
+          >That color isn't available</span
+        >
+        <button type="submit" class="header_colors_btn">
+          <img
+            src="../../../assets/Project-Imgs/Cube/search-icon.png"
+            alt="a search icon for the input"
+            class="header_colors_btn_icon"
+          />
+        </button>
+      </form>
+      <img
+        src="../../../assets/Project-Imgs/Cube/help-icon.png"
+        alt="help icon on input"
+        class="header_colors_help"
+        (click)="openInfo()"
+      />
+    </div>
+  </header>
+  <section class="info">
+    <ul class="info_list">
+      <span class="info_list_header">You can enter your input</span>
+      <li class="info_list_item">
+        Clicking the search icon <br />
+        or else pressing enter.
+      </li>
+    </ul>
+    <ul class="info_list">
+      <span class="info_list_header"
+        >What are the colors available to enter?</span
+      >
+      <li class="info_list_item">Red - Blue</li>
+      <li class="info_list_item">Green - Orange</li>
+      <li class="info_list_item">Purple - Pink - White</li>
+    </ul>
+    <button class="info_btn" type="button" (click)="closeInfo()">
+      Got it!
+    </button>
+  </section>
+  <main>
+    <div class="container">
+      <div class="box">
+        <div class="card front">Goorezy</div>
+        <div class="card back"></div>
+        <div class="card left">
+          <img
+            src="../../../assets/Project-Imgs/Cube/css-3.png"
+            alt="css logo"
+            class="css_logo"
+          />
+        </div>
+        <div class="card right">
+          <img
+            src="../../../assets/Project-Imgs/Cube/js-logo.png"
+            alt="javascript logo"
+            class="js_logo"
+          />
+        </div>
+        <div class="card top">
+          <img
+            src="../../../assets/Project-Imgs/Cube/ps-figma_logo.png"
+            alt="photoshop and figma logo"
+            class="ps_logo"
+          />
+        </div>
+        <div class="card bottom">
+          <img
+            src="../../../assets/Project-Imgs/Cube/arg-logo.png"
+            alt="argentina map pin logo"
+            class="arg_logo"
+          />
+        </div>
+      </div>
+    </div>
+  </main>
+</body>

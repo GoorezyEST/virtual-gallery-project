@@ -144,4 +144,80 @@
       <hr class="project__bottom__line" />
     </div>
   </section>
+
+  <section class="project cube" #cube>
+    <div class="project__top">
+      <hr class="project__top__line" />
+    </div>
+    <div class="project__cover">
+      <div class="project__cover__icon">
+        <img
+          src="../../assets/eye-icon.png"
+          alt="An eye icon"
+          class="project__cover__icon--eye"
+          (click)="toProyect(cube)"
+        />
+      </div>
+      <img
+        src="../../assets/cover-presentation-cube.png"
+        alt="A photo of the project"
+        class="project__cover__photo"
+      />
+    </div>
+    <div class="project__description">
+      <h3 class="project__description__title">Just a Cube</h3>
+      <p class="project__description__text">
+        This is a project previously developed in JavaScript. Which I decided to
+        mold to the TypeScript environment. Its functionality is based on an
+        animation that starts or stops when the user wants. As well as an input
+        where you can enter a variety of colors to modify the theme of the
+        website.
+      </p>
+      <p class="project__description__text">
+        In this development, the main technology used was TypeScript. In order
+        to provide that interactivity to the user with the cube.
+      </p>
+      <div class="project__description__developer">
+        <p class="project__description__developer__name">
+          Developed by Goorezy
+        </p>
+        <img
+          src="../../assets/github-icon.png"
+          alt="GitHub icon"
+          class="project__description__developer__github"
+          (click)="toGitHubG()"
+        />
+      </div>
+    </div>
+    <div class="project__technologies">
+      <img
+        src="../../assets/Tech-Icons/html-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/css-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/sass-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/ts-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+      <img
+        src="../../assets/Tech-Icons/ps-icon.png"
+        alt="A technology icon"
+        class="project__technologies__icon"
+      />
+    </div>
+    <div class="project__bottom">
+      <hr class="project__bottom__line" />
+    </div>
+  </section>
 </body>

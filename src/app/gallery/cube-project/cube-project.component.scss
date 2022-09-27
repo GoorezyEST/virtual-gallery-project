@@ -1,0 +1,324 @@
+:root {
+  --background-light: rgb(240, 240, 240);
+  --background-dark: rgb(163, 163, 163);
+  --light: rgb(228, 228, 228);
+  --dark: rgb(49, 49, 49);
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  height: 100vh;
+  background-image: radial-gradient(rgb(240, 240, 240), rgb(163, 163, 163));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.close {
+  position: absolute;
+  left: 6px;
+  top: 6px;
+  width: 26px;
+  opacity: 0.5;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+.container {
+  height: 60vh;
+  width: 30vw;
+  position: absolute;
+  top: 50vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  perspective: 1000px;
+}
+
+.box {
+  height: 250px;
+  width: 250px;
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  transform-style: preserve-3d;
+  animation: rotation 10s infinite;
+  animation-play-state: paused;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+  20% {
+    transform: rotateX(-45deg) rotateY(-45deg);
+  }
+  40% {
+    transform: rotateX(45deg) rotateY(45deg);
+  }
+  60% {
+    transform: rotateX(-45deg) rotateY(45deg);
+  }
+  80% {
+    transform: rotateX(45deg) rotateY(-45deg);
+  }
+  100% {
+    transform: rotateX(0deg) rotateY(0deg);
+  }
+}
+.card {
+  height: 250px;
+  width: 250px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 100px 0;
+  color: rgb(228, 228, 228);
+  font-size: 32px;
+  box-sizing: border-box;
+  position: absolute;
+  font-family: "Calibri", sans-serif;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.front {
+  transform: translateZ(125px);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.back {
+  transform: translateZ(-125px);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.left {
+  right: 125px;
+  transform: rotateY(-90deg);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.right {
+  left: 125px;
+  transform: rotateY(90deg);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.top {
+  bottom: 125px;
+  transform: rotateX(90deg);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.bottom {
+  top: 125px;
+  transform: rotateX(-90deg);
+  background-color: rgb(49, 49, 49);
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.css_logo {
+  width: 50%;
+}
+
+.js_logo {
+  width: 50%;
+}
+
+.ps_logo {
+  width: 65%;
+}
+
+.arg_logo {
+  width: 50%;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.header_btn {
+  color: rgb(228, 228, 228);
+  background: linear-gradient(
+      to left,
+      rgb(49, 49, 49) 50%,
+      rgb(228, 228, 228) 50%
+    )
+    right;
+  background-size: 201% 101%;
+  font-family: "Calibri", sans-serif;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 6px;
+  margin-right: 12px;
+  letter-spacing: 3px;
+  border: none;
+  transition: background-position 1s, color 1s, transform 0.2s;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+.header_btn:hover {
+  background-position: left;
+  color: rgb(49, 49, 49);
+}
+.header_btn:active {
+  transform: scale(0.92);
+}
+.header_colors {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+}
+.header_colors_input {
+  font-family: "Calibri", sans-serif;
+  font-weight: normal;
+  font-size: 24px;
+  padding: 6px 0 6px 8px;
+  width: 16rem;
+  border: none;
+  border-radius: 6px;
+  background-color: rgba(228, 228, 228, 0.8);
+  color: rgb(49, 49, 49);
+  border: 1px solid transparent;
+  outline: none;
+}
+.header_colors_input:focus {
+  border: 1px solid rgba(49, 49, 49, 0.616);
+  outline: none;
+}
+.header_colors_input::placeholder {
+  color: rgba(49, 49, 49, 0.4);
+}
+.header_colors_input_error {
+  font-family: "Calibri", sans-serif;
+  font-weight: normal;
+  color: rgba(255, 74, 74, 0.753);
+  position: absolute;
+  font-size: 16px;
+  transform: translateX(3rem) translateY(2.5rem);
+  display: none;
+}
+.header_colors_btn {
+  width: max-content;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  position: absolute;
+  transform: translateX(14rem);
+  cursor: pointer;
+}
+.header_colors_btn_icon {
+  width: 24px;
+  transform: rotateY(180deg);
+  opacity: 0.4;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.header_colors_btn_icon:hover {
+  opacity: 1;
+}
+.header_colors_help {
+  width: 32px;
+  margin-left: 20px;
+  opacity: 0.4;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.header_colors_help:hover {
+  opacity: 1;
+}
+
+.info {
+  visibility: hidden;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  background-color: rgb(31, 31, 31);
+}
+.info_list {
+  list-style: none;
+  font-family: "Calibri", sans-serif;
+  font-weight: normal;
+  font-size: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: rgb(228, 228, 228);
+  cursor: default;
+}
+.info_list_header {
+  margin: 12px 0 12px 0;
+  cursor: default;
+}
+.info_list_item {
+  font-size: 22px;
+  color: rgba(228, 228, 228, 0.671);
+  text-align: center;
+  cursor: default;
+}
+.info_btn {
+  color: rgb(228, 228, 228);
+  background: linear-gradient(
+      to left,
+      rgb(49, 49, 49) 50%,
+      rgb(228, 228, 228) 50%
+    )
+    right;
+  background-size: 201% 101%;
+  font-family: "Calibri", sans-serif;
+  font-weight: bold;
+  font-size: 22px;
+  text-align: center;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border-radius: 6px;
+  margin-top: 24px;
+  border: none;
+  transition: background-position 1s, color 1s, transform 0.2s;
+  box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+}
+.info_btn:hover {
+  background-position: left;
+  color: rgb(49, 49, 49);
+}
+.info_btn:active {
+  transform: scale(0.92);
+}
+
+/*# sourceMappingURL=style.css.map */

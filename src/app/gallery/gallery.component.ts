@@ -104,6 +104,8 @@ export class GalleryComponent implements AfterViewInit {
       this.router.navigate(['project-hover-lights'], {
         relativeTo: this.route,
       });
+    } else if (project.classList.contains('cube')) {
+      this.router.navigate(['project-cube'], { relativeTo: this.route });
     }
   }
 }

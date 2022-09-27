@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import SnakeGame from '../SnakeGame';
+import SnakeControls from './SnakeControls';
 import SnakeFood from './SnakeFood';
 import Config from './SnakeUtils/Config';
 import { HelperFunctions } from './SnakeUtils/Helpers';
@@ -18,6 +19,7 @@ export default class Snake {
   helpers: HelperFunctions;
   food: SnakeFood;
   isGameOver: boolean;
+  KEY: SnakeControls;
 
   constructor(
     // i,
@@ -32,6 +34,8 @@ export default class Snake {
 
     this.pos = new THREE.Vector2(this.configData.W / 2, this.configData.H / 2);
     this.dir = new THREE.Vector2(0, 0);
+
+    this.KEY = this.snakeGame.snakeControls;
     // this.type = type;
     // this.index = i;
     this.delay = 5;
@@ -77,21 +81,22 @@ export default class Snake {
     }
   }
 
-  // controlls() {
-  //   let dir = this.size;
-  //   if (KEY.ArrowUp) {
-  //     this.dir = new THREE.Vector2(0, -dir);
-  //   }
-  //   if (KEY.ArrowDown) {
-  //     this.dir = new THREE.Vector2(0, dir);
-  //   }
-  //   if (KEY.ArrowLeft) {
-  //     this.dir = new THREE.Vector2(-dir, 0);
-  //   }
-  //   if (KEY.ArrowRight) {
-  //     this.dir = new THREE.Vector2(dir, 0);
-  //   }
-  // }
+  controlls() {
+    let dir = this.size;
+    if (this.KEY.ArrowUp) {
+      this.dir = new THREE.Vector2(0, -dir);
+    }
+    if (this.KEY.ArrowDown) {
+      this.dir = new THREE.Vector2(0, dir);
+    }
+    if (this.KEY.ArrowLeft) {
+      this.dir = new THREE.Vector2(-dir, 0);
+    }
+    if (this.KEY.ArrowRight) {
+      this.dir = new THREE.Vector2(dir, 0);
+    }
+  }
+
   selfCollision() {
     for (let i = 0; i < this.history.length; i++) {
       let p = this.history[i];

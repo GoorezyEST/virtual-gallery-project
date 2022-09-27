@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as THREE from 'three';
 import { Experience } from '../Experience';
 import Snake from './Snake/Snake';
+import SnakeControls from './Snake/SnakeControls';
 import SnakeFood from './Snake/SnakeFood';
 import Particle from './Snake/SnakeParticles';
 import Config from './Snake/SnakeUtils/Config';
@@ -17,14 +18,15 @@ export default class SnakeGame {
   maxScore: string | undefined | number;
   splashingParticleCount: number;
   particles: Array<Particle>;
-  requestID!: ReturnType<typeof setTimeout>;
   currentHue: string;
   CTX: CanvasRenderingContext2D | null;
   canvasTexture: THREE.CanvasTexture;
+  snakeControls: SnakeControls;
 
   constructor() {
     this.config = new Config();
     this.helpers = new HelperFunctions(this);
+    this.snakeControls = new SnakeControls();
     this.snake = new Snake(this);
     this.food = new SnakeFood(this);
     this.CTX = this.helpers.CTX;
@@ -71,8 +73,6 @@ export default class SnakeGame {
   loop() {
     this.clear();
     if (!this.config.isGameOver) {
-      this.requestID = setTimeout(this.loop, 1000 / 60);
-
       this.helpers.drawGrid();
       this.snake.update();
       this.food.draw();
@@ -117,7 +117,6 @@ export default class SnakeGame {
     this.food.spawn();
     // KEY.resetState();
     this.config.isGameOver = false;
-    clearTimeout(this.requestID);
     this.loop();
   }
 }

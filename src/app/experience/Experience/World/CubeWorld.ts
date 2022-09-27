@@ -4,13 +4,19 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Camera from '../Camera';
 import { Experience } from '../Experience';
 import { Sizes } from '../Utils/Sizes';
+import SnakeGame from './SnakeGame';
+import { EventEmitter } from '@angular/core';
 
-export default class World {
+export default class CubeWorld {
   sizes: Sizes;
   scene: THREE.Scene;
   canvas: HTMLCanvasElement;
   camera: Camera;
   gltfLoader: GLTFLoader;
+  snakeGame: SnakeGame;
+  cubeWorldQuaternion!: THREE.Quaternion;
+  loadedEventEmitter: EventEmitter<string>;
+  cubeWorldSceneReference!: THREE.Group;
 
   constructor(private experience: Experience) {
     this.sizes = this.experience.sizes;
@@ -19,6 +25,11 @@ export default class World {
     this.camera = this.experience.camera;
     this.gltfLoader = new GLTFLoader();
 
+    this.loadedEventEmitter = new EventEmitter();
+
+    // SnakeGame Instance
+    this.snakeGame = new SnakeGame();
+
     this.loadCubeWorldModel();
   }
 
@@ -26,7 +37,6 @@ export default class World {
     this.gltfLoader.load(
       'assets/Experience/Models/CubeWorldForTesting.glb',
       (model) => {
-        console.log(model);
         const material = new THREE.MeshBasicMaterial({
           color: 0xffff00,
         });
@@ -53,9 +63,18 @@ export default class World {
             (child as THREE.Mesh).material = material;
           }
         });
+        model.scene.rotation.y = Math.PI;
+        this.cubeWorldQuaternion = model.scene.quaternion.clone();
+        this.cubeWorldSceneReference = model.scene;
         this.scene.add(model.scene);
+
+        this.loadedEventEmitter.emit('Model Loaded');
       }
     );
+  }
+
+  runSnakeGame() {
+    this.snakeGame.loop();
   }
 
   resize() {}

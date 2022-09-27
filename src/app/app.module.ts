@@ -10,6 +10,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { CardProjectComponent } from './gallery/card-project/card-project.component';
 import { HoverProjectComponent } from './gallery/hover-project/hover-project.component';
+import { CubeProjectComponent } from './gallery/cube-project/cube-project.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { HoverProjectComponent } from './gallery/hover-project/hover-project.com
     GalleryComponent,
     CardProjectComponent,
     HoverProjectComponent,
+    CubeProjectComponent,
   ],
   imports: [BrowserModule, AppRouting, ThreeModule, DragDropModule],
   providers: [],

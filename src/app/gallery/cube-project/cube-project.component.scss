@@ -26,6 +26,11 @@ body {
   opacity: 0.5;
   transition: all 0.3s;
   cursor: pointer;
+  @media screen and (max-width: 400px) {
+    top: auto;
+    bottom: 6px;
+    z-index: 20000;
+  }
 
   &:hover {
     opacity: 1;
@@ -36,25 +41,43 @@ body {
   }
 }
 
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .container {
   height: 60vh;
   width: 30vw;
-  position: absolute;
-  top: 50vh;
-  left: 50vw;
-  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10vh;
   perspective: 1000px;
+  @media screen and (max-width: 670px) {
+    width: 100%;
+    height: 100%;
+    margin-top: 0;
+  }
 }
 
 .box {
   height: 250px;
   width: 250px;
-  position: absolute;
-  top: 100px;
-  left: 100px;
   transform-style: preserve-3d;
   animation: rotation 10s infinite;
   animation-play-state: paused;
+  @media screen and (max-width: 920px) {
+    height: 200px;
+    width: 200px;
+  }
+  @media screen and (max-width: 670px) {
+    height: 150px;
+    width: 150px;
+  }
 }
 
 @keyframes rotation {
@@ -93,18 +116,41 @@ body {
   font-family: "Calibri", sans-serif;
   font-style: italic;
   font-weight: bold;
+
+  @media screen and (max-width: 920px) {
+    height: 200px;
+    width: 200px;
+  }
+  @media screen and (max-width: 670px) {
+    height: 150px;
+    width: 150px;
+    font-size: 24px;
+    padding: 0;
+  }
 }
 
 .front {
   transform: translateZ(125px);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    transform: translateZ(100px);
+  }
+  @media screen and (max-width: 670px) {
+    transform: translateZ(75px);
+  }
 }
 
 .back {
   transform: translateZ(-125px);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    transform: translateZ(-100px);
+  }
+  @media screen and (max-width: 670px) {
+    transform: translateZ(-75px);
+  }
 }
 
 .left {
@@ -112,6 +158,12 @@ body {
   transform: rotateY(-90deg);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    right: 100px;
+  }
+  @media screen and (max-width: 670px) {
+    right: 75px;
+  }
 }
 
 .right {
@@ -119,6 +171,12 @@ body {
   transform: rotateY(90deg);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    left: 100px;
+  }
+  @media screen and (max-width: 670px) {
+    left: 75px;
+  }
 }
 
 .top {
@@ -126,6 +184,12 @@ body {
   transform: rotateX(90deg);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    bottom: 100px;
+  }
+  @media screen and (max-width: 670px) {
+    bottom: 75px;
+  }
 }
 
 .bottom {
@@ -133,22 +197,40 @@ body {
   transform: rotateX(-90deg);
   background-color: rgb(49, 49, 49);
   border: 1px solid rgb(228, 228, 228);
+  @media screen and (max-width: 920px) {
+    top: 100px;
+  }
+  @media screen and (max-width: 670px) {
+    top: 75px;
+  }
 }
 
 .css_logo {
   width: 50%;
+  @media screen and (max-width: 670px) {
+    width: 40%;
+  }
 }
 
 .js_logo {
   width: 50%;
+  @media screen and (max-width: 670px) {
+    width: 40%;
+  }
 }
 
 .ps_logo {
   width: 65%;
+  @media screen and (max-width: 670px) {
+    width: 40%;
+  }
 }
 
 .arg_logo {
   width: 50%;
+  @media screen and (max-width: 670px) {
+    width: 40%;
+  }
 }
 
 header {
@@ -156,12 +238,25 @@ header {
   align-items: center;
   justify-content: center;
   padding: 16px;
+  @media screen and (max-width: 670px) {
+    padding: 8px;
+  }
+  @media screen and (max-width: 330px) {
+    padding: 8px 0;
+  }
+  @media screen and (max-width: 280px) {
+    width: 100%;
+  }
 }
 
 .header {
   display: flex;
   align-items: center;
   justify-content: center;
+  @media screen and (max-width: 280px) {
+    width: 100%;
+    justify-content: space-evenly;
+  }
 }
 .header_btn {
   color: rgb(228, 228, 228);
@@ -185,6 +280,20 @@ header {
   border: none;
   transition: background-position 1s, color 1s, transform 0.2s;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+  @media screen and (max-width: 670px) {
+    padding: 6px 10px;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+  @media screen and (max-width: 330px) {
+    padding: 3px 7px;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+  }
+  @media screen and (max-width: 280px) {
+    margin-right: 0;
+    padding: 4px 7px;
+  }
 }
 .header_btn:hover {
   background-position: left;
@@ -197,6 +306,9 @@ header {
   display: flex;
   align-items: center;
   margin-left: 12px;
+  @media screen and (max-width: 280px) {
+    margin-left: 0;
+  }
 }
 .header_colors_input {
   font-family: "Calibri", sans-serif;
@@ -210,6 +322,20 @@ header {
   color: rgb(49, 49, 49);
   border: 1px solid transparent;
   outline: none;
+  @media screen and (max-width: 670px) {
+    padding: 6px 0 6px 8px;
+    font-size: 16px;
+    width: 12rem;
+  }
+  @media screen and (max-width: 330px) {
+    padding: 4px 0 4px 6px;
+    font-size: 12px;
+    width: 10rem;
+  }
+  @media screen and (max-width: 280px) {
+    padding: 4px 0 4px 4px;
+    width: 8rem;
+  }
 }
 .header_colors_input:focus {
   border: 1px solid rgba(49, 49, 49, 0.616);
@@ -226,6 +352,12 @@ header {
   font-size: 16px;
   transform: translateX(3rem) translateY(2.5rem);
   display: none;
+  @media screen and (max-width: 670px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 330px) {
+    font-size: 8px;
+  }
 }
 .header_colors_btn {
   width: max-content;
@@ -235,6 +367,15 @@ header {
   position: absolute;
   transform: translateX(14rem);
   cursor: pointer;
+  @media screen and (max-width: 670px) {
+    transform: translateX(10.5rem);
+  }
+  @media screen and (max-width: 330px) {
+    transform: translateX(8.85rem);
+  }
+  @media screen and (max-width: 280px) {
+    transform: translate(6.85rem);
+  }
 }
 .header_colors_btn_icon {
   width: 24px;
@@ -242,6 +383,12 @@ header {
   opacity: 0.4;
   transition: all 0.2s;
   cursor: pointer;
+  @media screen and (max-width: 670px) {
+    width: 16px;
+  }
+  @media screen and (max-width: 330px) {
+    width: 12px;
+  }
 }
 .header_colors_btn_icon:hover {
   opacity: 1;
@@ -252,6 +399,15 @@ header {
   opacity: 0.4;
   cursor: pointer;
   transition: all 0.2s;
+  @media screen and (max-width: 670px) {
+    width: 20px;
+  }
+  @media screen and (max-width: 330px) {
+    width: 16px;
+  }
+  @media screen and (max-width: 280px) {
+    margin-left: 0;
+  }
 }
 .header_colors_help:hover {
   opacity: 1;
@@ -280,6 +436,9 @@ header {
   justify-content: center;
   color: rgb(228, 228, 228);
   cursor: default;
+  @media screen and (max-width: 360px) {
+    font-size: 16px;
+  }
 }
 .info_list_header {
   margin: 12px 0 12px 0;
@@ -290,6 +449,9 @@ header {
   color: rgba(228, 228, 228, 0.671);
   text-align: center;
   cursor: default;
+  @media screen and (max-width: 360px) {
+    font-size: 16px;
+  }
 }
 .info_btn {
   color: rgb(228, 228, 228);
@@ -312,6 +474,10 @@ header {
   border: none;
   transition: background-position 1s, color 1s, transform 0.2s;
   box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+  @media screen and (max-width: 360px) {
+    font-size: 16px;
+    padding: 6px 14px;
+  }
 }
 .info_btn:hover {
   background-position: left;

@@ -67,9 +67,10 @@ export default class CubeWorld {
             (child as THREE.Mesh).geometry.groups =
               new THREE.BoxGeometry().groups;
             (child as THREE.Mesh).material = worldCubeMaterials;
-          } else if (!(child instanceof Group) && child.name !== 'WorldCube') {
-            (child as THREE.Mesh).material = material;
           }
+          //  else if (!(child instanceof Group) && child.name !== 'WorldCube') {
+          //   (child as THREE.Mesh).material = material;
+          // }
         });
         model.scene.rotation.y = Math.PI;
         this.cubeWorldQuaternion = model.scene.quaternion.clone();

@@ -69,7 +69,7 @@ export class Experience implements OnDestroy {
     this.world.update();
     this.camera.update();
     this.controls.onIntersects();
-    this.renderer.update();
+    this.renderr.update();
   }
   ngOnDestroy(): void {
     this.resizeEvent.unsubscribe();

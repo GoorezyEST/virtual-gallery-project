@@ -32,22 +32,18 @@ export default class Particle {
       .map((n) => +n);
     let colorValues = this.helpers.hsl2rgb(hsl[0], hsl[1] / 100, hsl[2] / 100);
     let r, g, b;
-    if (colorValues) {
-      r = colorValues[0];
-      g = colorValues[1];
-      b = colorValues[2];
-    }
-    if (this.CTX && r && g && b) {
+
+    r = colorValues[0];
+    g = colorValues[1];
+    b = colorValues[2];
+
+    if (this.CTX) {
       this.CTX.shadowColor = `rgb(${r}, ${g}, ${b}, ${1})`;
       this.CTX.shadowBlur = 0;
       this.CTX.globalCompositeOperation = 'lighter';
       this.CTX.fillStyle = `rgb(${r}, ${g}, ${b}, ${1})`;
       this.CTX.fillRect(x, y, this.size, this.size);
       this.CTX.globalCompositeOperation = 'source-over';
-    } else {
-      console.error(
-        'Alguna cagada me mande en la funcion Draw de SnakeParticles'
-      );
     }
   }
 

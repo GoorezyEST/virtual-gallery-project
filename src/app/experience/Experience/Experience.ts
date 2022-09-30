@@ -19,7 +19,6 @@ export class Experience implements OnDestroy {
   resizeEvent!: Subscription;
   timerEvent!: Subscription;
   snakeGamePlayEvent!: Subscription;
-  // intersectionEvent: Subscription;
   scene: THREE.Scene;
   camera!: Camera;
   sizes: Sizes;
@@ -58,8 +57,6 @@ export class Experience implements OnDestroy {
         );
       }
     );
-
-    // Only DEV code for Testing Purposes
   }
 
   resize() {
@@ -69,10 +66,10 @@ export class Experience implements OnDestroy {
   }
 
   update() {
+    this.world.update();
     this.camera.update();
     this.controls.onIntersects();
     this.renderer.update();
-    this.world.update();
   }
   ngOnDestroy(): void {
     this.resizeEvent.unsubscribe();

@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import * as THREE from 'three';
-import { Experience } from '../Experience';
 import Snake from './Snake/Snake';
 import SnakeControls from './Snake/SnakeControls';
 import SnakeFood from './Snake/SnakeFood';
 import Particle from './Snake/SnakeParticles';
 import Config from './Snake/SnakeUtils/Config';
 import { HelperFunctions } from './Snake/SnakeUtils/Helpers';
+import * as dat from 'dat.gui';
 
 @Injectable()
 export default class SnakeGame {
@@ -19,31 +19,64 @@ export default class SnakeGame {
   splashingParticleCount: number;
   particles: Array<Particle>;
   currentHue: string;
-  CTX: CanvasRenderingContext2D | null;
-  canvasTexture: THREE.CanvasTexture;
+  CTX!: CanvasRenderingContext2D;
+  canvasTexture!: THREE.CanvasTexture;
   snakeControls: SnakeControls;
+  history: Array<THREE.Vector2>;
+  gui: dat.GUI;
 
   constructor() {
-    this.config = new Config();
-    this.helpers = new HelperFunctions(this);
-    this.snakeControls = new SnakeControls();
-    this.snake = new Snake(this);
-    this.food = new SnakeFood(this);
-    this.CTX = this.helpers.CTX;
-
     // Varialbles de juego
-    this.currentHue = this.food.currentHue;
     this.score = 0;
     this.maxScore = window.localStorage.getItem('maxScore') || undefined;
     this.particles = [];
     this.splashingParticleCount = 20;
+    this.history = [];
+
+    this.config = new Config();
+    this.helpers = new HelperFunctions(this);
+    this.snakeControls = new SnakeControls();
+    this.food = new SnakeFood(this);
+    this.snake = new Snake(this);
+    if (this.config.CTX) this.CTX = this.config.CTX;
+
+    this.currentHue = this.food.currentHue;
+
+    this.gui = new dat.GUI();
 
     // Textura a partir del canvas del juego
-    this.canvasTexture = new THREE.CanvasTexture(this.config.dom_canvas);
+    if (this.config.CTX)
+      this.canvasTexture = new THREE.CanvasTexture(this.config.CTX.canvas);
+    this.canvasTexture.flipY = false;
+    this.canvasTexture.magFilter = THREE.LinearFilter;
+    this.canvasTexture.wrapS = THREE.RepeatWrapping;
+    this.canvasTexture.wrapT = THREE.RepeatWrapping;
+    this.canvasTexture.mapping = THREE.UVMapping;
+    this.canvasTexture.repeat = new THREE.Vector2(3.8, 4);
+    this.canvasTexture.offset = new THREE.Vector2(-0.97, -0.5);
+    this.canvasTexture.rotation = 1.5708;
+    this.gui
+      .add(this.canvasTexture.repeat, 'x', 0, 5, 0.001)
+      .name('texture.repeat.x');
+    this.gui
+      .add(this.canvasTexture.repeat, 'y', 0, 5, 0.001)
+      .name('texture.repeat.y');
+    this.gui
+      .add(this.canvasTexture.offset, 'x', -2, 2, 0.001)
+      .name('texture.offset.x');
+    this.gui
+      .add(this.canvasTexture.offset, 'y', -2, 2, 0.001)
+      .name('texture.offset.y');
+    this.gui
+      .add(this.canvasTexture.center, 'x', -0.5, 1.5, 0.001)
+      .name('texture.center.x');
+    this.gui
+      .add(this.canvasTexture.center, 'y', -0.5, 1.5, 0.001)
+      .name('texture.center.y');
+    this.gui.add(this.canvasTexture, 'rotation', 0, 5, 0.0001);
   }
 
   // All functions used above
-
   incrementScore() {
     this.score++;
     // dom_score.innerText = score.toString().padStart(2, '0');
@@ -65,9 +98,8 @@ export default class SnakeGame {
 
   //New function not used above
   initialize() {
-    // KEY.listen();
+    this.snakeControls.listen();
     // dom_replay.addEventListener('click', this.reset, false);
-    this.loop();
   }
 
   loop() {
@@ -76,6 +108,7 @@ export default class SnakeGame {
       this.helpers.drawGrid();
       this.snake.update();
       this.food.draw();
+      this.currentHue = this.food.currentHue;
 
       for (let p of this.particles) {
         p.update();
@@ -85,6 +118,7 @@ export default class SnakeGame {
       this.clear();
       this.GameOver();
     }
+    this.config.isGameOver = this.snake.isGameOver;
   }
 
   GameOver() {
@@ -115,7 +149,7 @@ export default class SnakeGame {
     this.score = 0;
     this.snake = new Snake(this);
     this.food.spawn();
-    // KEY.resetState();
+    this.snake.KEY.resetState();
     this.config.isGameOver = false;
     this.loop();
   }

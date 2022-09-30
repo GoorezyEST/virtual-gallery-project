@@ -21,11 +21,7 @@ export default class Snake {
   isGameOver: boolean;
   KEY: SnakeControls;
 
-  constructor(
-    // i,
-    // type,
-    public snakeGame: SnakeGame
-  ) {
+  constructor(public snakeGame: SnakeGame) {
     this.configData = this.snakeGame.config;
     this.CTX = this.configData.CTX;
     this.helpers = this.snakeGame.helpers;
@@ -36,12 +32,10 @@ export default class Snake {
     this.dir = new THREE.Vector2(0, 0);
 
     this.KEY = this.snakeGame.snakeControls;
-    // this.type = type;
-    // this.index = i;
-    this.delay = 5;
+    this.delay = 8;
     this.size = this.configData.W / this.configData.cells;
     this.color = 'white';
-    this.history = [];
+    this.history = this.snakeGame.history;
     this.total = 1;
   }
 
@@ -49,7 +43,7 @@ export default class Snake {
     let { x, y } = this.pos;
     if (this.CTX) {
       this.CTX.fillStyle = this.color;
-      this.CTX.shadowBlur = 20;
+      this.CTX.shadowBlur = 0;
       this.CTX.shadowColor = 'rgba(255, 255, 255, 0.3)';
       this.CTX.fillRect(x, y, this.size, this.size);
       this.CTX.shadowBlur = 0;
@@ -65,6 +59,7 @@ export default class Snake {
       }
     }
   }
+
   walls() {
     let { x, y } = this.pos;
     if (x + this.configData.cellSize > this.configData.W) {
@@ -108,20 +103,22 @@ export default class Snake {
   update() {
     this.walls();
     this.draw();
-    // this.controlls();
+    this.controlls();
     if (!this.delay--) {
       if (this.helpers.isCollision(this.pos, this.food.pos)) {
-        // incrementScore();
-        // particleSplash();
+        this.snakeGame.incrementScore();
+        this.snakeGame.particleSplash();
         this.food.spawn();
         this.total++;
       }
+
       this.history[this.total - 1] = new THREE.Vector2(this.pos.x, this.pos.y);
       for (let i = 0; i < this.total - 1; i++) {
         this.history[i] = this.history[i + 1];
       }
       this.pos.add(this.dir);
-      this.delay = 5;
+
+      this.delay = 8;
       this.total > 3 ? this.selfCollision() : null;
     }
   }

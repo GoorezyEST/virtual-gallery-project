@@ -17,6 +17,7 @@ export default class CubeWorld {
   cubeWorldQuaternion!: THREE.Quaternion;
   loadedEventEmitter: EventEmitter<string>;
   cubeWorldSceneReference!: THREE.Group;
+  snakeTextureMaterial!: THREE.Texture | null;
 
   constructor(private experience: Experience) {
     this.sizes = this.experience.sizes;
@@ -44,10 +45,17 @@ export default class CubeWorld {
           new THREE.MeshBasicMaterial({ color: 0xff0000 }),
           new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
           new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-          new THREE.MeshBasicMaterial({ color: 0xf0a0a0 }),
+          new THREE.MeshBasicMaterial({
+            map: this.snakeGame.canvasTexture,
+            fog: false,
+            depthTest: false,
+            depthWrite: false,
+          }),
           new THREE.MeshBasicMaterial({ color: 0xff0ddd }),
           new THREE.MeshBasicMaterial({ color: 0xffa000 }),
         ];
+        this.snakeTextureMaterial = worldCubeMaterials[3].map;
+
         model.scene.children.forEach((child) => {
           if (child instanceof Group) {
             child.children.forEach(
@@ -74,6 +82,7 @@ export default class CubeWorld {
   }
 
   runSnakeGame() {
+    this.snakeGame.canvasTexture.needsUpdate = true;
     this.snakeGame.loop();
   }
 

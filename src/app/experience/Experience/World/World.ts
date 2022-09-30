@@ -10,6 +10,7 @@ export default class World {
   canvas: HTMLCanvasElement;
   camera: Camera;
   cubeWorld: CubeWorld;
+  snakeReady: boolean = false;
 
   constructor(private experience: Experience) {
     this.sizes = this.experience.sizes;
@@ -18,9 +19,18 @@ export default class World {
     this.camera = this.experience.camera;
 
     this.cubeWorld = new CubeWorld(experience);
+
+    this.cubeWorld.loadedEventEmitter.subscribe(() => {
+      this.cubeWorld.snakeGame.initialize();
+      this.snakeReady = true;
+    });
   }
 
   resize() {}
 
-  update() {}
+  update() {
+    if (this.snakeReady) {
+      this.cubeWorld.runSnakeGame();
+    }
+  }
 }

@@ -12,13 +12,14 @@ export default class SnakeFood {
   configData: Config;
   CTX: CanvasRenderingContext2D | null;
   helpers: HelperFunctions;
-  snake: Snake;
+  history: Array<THREE.Vector2>;
 
   constructor(public snakeGame: SnakeGame) {
     this.configData = this.snakeGame.config;
     this.CTX = this.configData.CTX;
     this.helpers = this.snakeGame.helpers;
-    this.snake = this.snakeGame.snake;
+    this.history = this.snakeGame.history;
+
     this.pos = new THREE.Vector2(
       ~~(Math.random() * this.configData.cells) * this.configData.cellSize,
       ~~(Math.random() * this.configData.cells) * this.configData.cellSize
@@ -26,11 +27,12 @@ export default class SnakeFood {
     this.color = this.currentHue = `hsl(${~~(Math.random() * 360)},100%,50%)`;
     this.size = this.configData.cellSize;
   }
+
   draw() {
     let { x, y } = this.pos;
     if (this.CTX) {
       this.CTX.globalCompositeOperation = 'lighter';
-      this.CTX.shadowBlur = 20;
+      this.CTX.shadowBlur = 0;
       this.CTX.shadowColor = this.color;
       this.CTX.fillStyle = this.color;
       this.CTX.fillRect(x, y, this.size, this.size);
@@ -38,10 +40,11 @@ export default class SnakeFood {
       this.CTX.shadowBlur = 0;
     }
   }
+
   spawn(): void {
     let randX = ~~(Math.random() * this.configData.cells) * this.size;
     let randY = ~~(Math.random() * this.configData.cells) * this.size;
-    for (let path of this.snake.history) {
+    for (let path of this.history) {
       if (this.helpers.isCollision(new THREE.Vector2(randX, randY), path)) {
         return this.spawn();
       }

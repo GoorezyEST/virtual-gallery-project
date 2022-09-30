@@ -1,12 +1,12 @@
 export default class Config {
-  public dom_canvas: HTMLCanvasElement;
-  public CTX: CanvasRenderingContext2D | null;
-  public W: number;
-  public H: number;
-  public cells: number;
-  public cellSize: number;
-  public cellsCount: number;
-  public isGameOver: boolean;
+  dom_canvas: HTMLCanvasElement;
+  CTX: CanvasRenderingContext2D | null;
+  W: number;
+  H: number;
+  cells: number;
+  cellSize: number;
+  cellsCount: number;
+  isGameOver: boolean;
 
   constructor() {
     this.dom_canvas = document.createElement('canvas');
@@ -18,10 +18,10 @@ export default class Config {
     }
 
     // Valores default de canvas (300x150) a (400x400)
-    this.W = this.dom_canvas.width = 400;
-    this.H = this.dom_canvas.height = 400;
+    this.W = this.dom_canvas.width = 256;
+    this.H = this.dom_canvas.height = 256;
 
-    this.cells = 20;
+    this.cells = 10;
     this.cellSize = this.W / this.cells;
     this.cellsCount = this.cells * this.cells;
 

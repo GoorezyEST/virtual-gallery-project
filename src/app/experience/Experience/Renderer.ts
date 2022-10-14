@@ -9,6 +9,7 @@ export default class Renderer {
   public canvas: HTMLCanvasElement;
   public camera: Camera;
   public perspectiveCamera: THREE.PerspectiveCamera;
+  // public perspectiveCamera: THREE.OrthographicCamera;
   public renderer!: THREE.WebGL1Renderer;
 
   constructor(public experience: Experience) {
@@ -28,6 +29,7 @@ export default class Renderer {
     });
     this.renderer.setSize(this.sizes.width, this.sizes.height);
     this.renderer.setPixelRatio(this.sizes.pixelRatio);
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
   }
 
   resize() {

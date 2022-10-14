@@ -9,6 +9,7 @@ import { Quaternion } from 'three';
 @Injectable()
 export default class Controls implements OnDestroy {
   camera: THREE.PerspectiveCamera;
+  // camera: THREE.OrthographicCamera;
   raycaster: THREE.Raycaster;
   pointer: THREE.Vector2;
   scene: THREE.Scene;
@@ -68,8 +69,10 @@ export default class Controls implements OnDestroy {
     this.intersectedObject = intersects[0] ? intersects[0].object : null;
 
     const intersectedFace = intersects[0] ? intersects[0].faceIndex : null;
+    // console.log(this.intersectedObject);
 
     if (this.intersectedObject?.name !== 'WorldCube') return;
+    // console.log(this.intersectedObject);
     switch (intersectedFace) {
       case 0:
       case 1:
@@ -105,7 +108,6 @@ export default class Controls implements OnDestroy {
         this.intersectionEvent = 'noIntersect';
         break;
     }
-
     if (this.cubeClicked === true) {
       const timeline = gsap.timeline();
       let initialQ = this.camera.quaternion.clone();

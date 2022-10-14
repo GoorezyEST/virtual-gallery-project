@@ -9,6 +9,7 @@ export default class Camera {
   scene: THREE.Scene;
   canvas: HTMLCanvasElement;
   perspectiveCamera!: THREE.PerspectiveCamera;
+  // perspectiveCamera!: THREE.OrthographicCamera;
   controls!: OrbitControls;
   cameraInitialQuaternionState!: THREE.Quaternion;
 
@@ -28,6 +29,14 @@ export default class Camera {
       0.1,
       1000
     );
+    // this.perspectiveCamera = new THREE.OrthographicCamera(
+    //   -this.sizes.width / 2,
+    //   this.sizes.width / 2,
+    //   this.sizes.height / 2,
+    //   -this.sizes.height / 2,
+    //   1,
+    //   1000
+    // );
     this.perspectiveCamera.position.set(0, 0, 5);
     this.scene.add(this.perspectiveCamera);
 
@@ -38,7 +47,7 @@ export default class Camera {
   setOrbitControls() {
     this.controls = new OrbitControls(this.perspectiveCamera, this.canvas);
     this.controls.enableDamping = true;
-    this.controls.enableZoom = false;
+    this.controls.enableZoom = true;
 
     // this.controls.addEventListener('change', () => {
     //   console.log(this.perspectiveCamera.position);

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import Camera from '../Camera';
 import { Experience } from '../Experience';
@@ -36,48 +35,49 @@ export default class CubeWorld {
 
   loadCubeWorldModel() {
     this.gltfLoader.load(
+      'assets/Experience/Models/SkateCurveMesh.glb',
+      (model) => {
+        console.log(model);
+      }
+    );
+
+    this.gltfLoader.load(
       'assets/Experience/Models/CubeWorldForTesting.glb',
       (model) => {
         const material = new THREE.MeshBasicMaterial({
           color: 0xffff00,
         });
-        const worldCubeMaterials = [
-          new THREE.MeshBasicMaterial({ color: 0xff0000 }),
-          new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
-          new THREE.MeshBasicMaterial({ color: 0x0000ff }),
-          new THREE.MeshBasicMaterial({
-            map: this.snakeGame.canvasTexture,
-            fog: false,
-            depthTest: false,
-            depthWrite: false,
-          }),
-          new THREE.MeshBasicMaterial({ color: 0xff0ddd }),
-          new THREE.MeshBasicMaterial({ color: 0xffa000 }),
-        ];
-        this.snakeTextureMaterial = worldCubeMaterials[3].map;
+        const snakeTextureMaterial = new THREE.MeshBasicMaterial({
+          map: this.snakeGame.canvasTexture,
+          fog: false,
+        });
+
+        console.log(model.scene);
 
         model.scene.children.forEach((child) => {
-          if (child instanceof Group) {
-            child.children.forEach(
-              (e) => ((e as THREE.Mesh).material = material)
-            );
-          } else if (child.name === 'WorldCube') {
-            let geo = (child as THREE.Mesh).geometry.clone();
-            (child as THREE.Mesh).geometry = new THREE.BoxGeometry().copy(geo);
-            (child as THREE.Mesh).geometry.groups =
-              new THREE.BoxGeometry().groups;
-            (child as THREE.Mesh).material = worldCubeMaterials;
-          }
-          //  else if (!(child instanceof Group) && child.name !== 'WorldCube') {
-          //   (child as THREE.Mesh).material = material;
+          // if (child.name === 'Skate_MOV') {
+          //   child.children.forEach((child) => {
+          //     child.children.forEach((child) => {
+          //       child.children.forEach((child) => {
+          //         // (child as THREE.Mesh).material = new THREE.MeshBasicMaterial({
+          //         //   color: 0xffffff,
+          //         // });
+          //       });
+          //     });
+          //   });
           // }
+          if (child.name === 'WorldCube') {
+            (child.children[5] as THREE.Mesh).material = snakeTextureMaterial;
+          }
         });
         model.scene.rotation.y = Math.PI;
         this.cubeWorldQuaternion = model.scene.quaternion.clone();
         this.cubeWorldSceneReference = model.scene;
         this.scene.add(model.scene);
-
         this.loadedEventEmitter.emit('Model Loaded');
+
+        let light = new THREE.AmbientLight(new THREE.Color(0xffffff));
+        this.scene.add(light);
       }
     );
   }

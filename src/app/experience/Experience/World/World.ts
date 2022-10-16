@@ -29,6 +29,7 @@ export default class World {
   resize() {}
 
   update() {
+    this.cubeWorld.update();
     if (this.snakeReady) {
       this.cubeWorld.runSnakeGame();
     }

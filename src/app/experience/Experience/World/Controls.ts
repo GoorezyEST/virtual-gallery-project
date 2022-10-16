@@ -4,7 +4,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { Experience } from '../Experience';
 import { EventEmitter } from '@angular/core';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { Quaternion } from 'three';
+import { BoxHelper, Quaternion } from 'three';
 
 @Injectable()
 export default class Controls implements OnDestroy {
@@ -13,7 +13,7 @@ export default class Controls implements OnDestroy {
   raycaster: THREE.Raycaster;
   pointer: THREE.Vector2;
   scene: THREE.Scene;
-  intersectionEvent!: string;
+  intersectionEvent!: string | null;
   cubeClicked: boolean;
   distanceCameraToCube: number;
   snakeGameOnRun: EventEmitter<string>;
@@ -23,12 +23,18 @@ export default class Controls implements OnDestroy {
   intersectedObject!: THREE.Object3D<THREE.Event> | null;
   initialCameraQueaternionState: THREE.Quaternion;
   worldCubeQuaternion: THREE.Quaternion;
+  listenerToReverseAnimation!: any;
+  onAnimationState: boolean = false;
+  linearRotationSetted: boolean = false;
+  linearRotationAxis!: string;
+  linearRotationSpeed!: number;
+  linearRotationDireccion!: number;
 
   constructor(private experience: Experience) {
     this.camera = this.experience.camera.perspectiveCamera;
     this.orbitControls = this.experience.camera.controls;
     this.scene = this.experience.scene;
-    this.pointer = new THREE.Vector2();
+    this.pointer = new THREE.Vector2(10000, 10000);
 
     // Cube Animation Trigger State and Camera animation Stuff
     this.distanceCameraToCube = this.experience.camera.controls.getDistance();
@@ -40,11 +46,7 @@ export default class Controls implements OnDestroy {
     this.cubeClicked = false;
 
     this.onClickCallback = () => {
-      if (
-        this.intersectionEvent &&
-        this.intersectionEvent !== 'noIntersect' &&
-        this.intersectedObject?.name === 'WorldCube'
-      ) {
+      if (this.intersectionEvent && !this.onAnimationState) {
         this.cubeClicked = true;
       }
     };
@@ -54,7 +56,7 @@ export default class Controls implements OnDestroy {
     this.snakeGameOnRun = new EventEmitter();
 
     // Set click event listener
-    window.addEventListener('click', this.onClickCallback.bind(this));
+    window.addEventListener('dblclick', this.onClickCallback.bind(this));
 
     this.setMouseMoveListener();
   }
@@ -65,50 +67,42 @@ export default class Controls implements OnDestroy {
 
     // calculate objects intersecting the picking ray
     const intersects = this.raycaster.intersectObjects(this.scene.children);
-
     this.intersectedObject = intersects[0] ? intersects[0].object : null;
 
-    const intersectedFace = intersects[0] ? intersects[0].faceIndex : null;
-    // console.log(this.intersectedObject);
-
-    if (this.intersectedObject?.name !== 'WorldCube') return;
-    // console.log(this.intersectedObject);
-    switch (intersectedFace) {
-      case 0:
-      case 1:
-        //   this.intersectionEvent.emit('faceOne');
-        this.intersectionEvent = 'faceOne';
-        break;
-      case 2:
-      case 3:
-        //   this.intersectionEvent.emit('faceTwo');
-        this.intersectionEvent = 'faceTwo';
-        break;
-      case 4:
-      case 5:
-        //   this.intersectionEvent.emit('faceThree');
-        this.intersectionEvent = 'faceThree';
-        break;
-      case 6:
-      case 7:
-        //   this.intersectionEvent.emit('faceFour');
-        this.intersectionEvent = 'faceFour';
-        break;
-      case 8:
-      case 9:
-        //   this.intersectionEvent.emit('faceFive');
-        this.intersectionEvent = 'faceFive';
-        break;
-      case 10:
-      case 11:
-        //   this.intersectionEvent.emit('faceSix');
-        this.intersectionEvent = 'faceSix';
-        break;
-      default:
-        this.intersectionEvent = 'noIntersect';
-        break;
+    if (!this.intersectedObject?.name) {
+      this.intersectionEvent = null;
+      return;
     }
-    if (this.cubeClicked === true) {
+    if (
+      this.intersectedObject?.name.includes('Door') ||
+      this.intersectedObject?.name === 'WorldCube_4'
+    ) {
+      this.intersectionEvent = 'DoorFace';
+    } else if (
+      this.intersectedObject?.name.includes('Skate') ||
+      this.intersectedObject?.name === 'WorldCube_5'
+    ) {
+      this.intersectionEvent = 'SkateFace';
+    } else if (
+      this.intersectedObject?.name.includes('City') ||
+      this.intersectedObject?.name === 'WorldCube_3'
+    ) {
+      this.intersectionEvent = 'CityFace';
+    } else if (
+      this.intersectedObject?.name.includes('SetUp') ||
+      this.intersectedObject?.name === 'WorldCube_1'
+    ) {
+      this.intersectionEvent = 'SetUpFace';
+    } else if (
+      this.intersectedObject?.name.includes('Nature') ||
+      this.intersectedObject?.name === 'WorldCube_2'
+    ) {
+      this.intersectionEvent = 'NatureFace';
+    } else if (this.intersectedObject?.name === 'WorldCube_6') {
+      this.intersectionEvent = 'SnakeFace';
+    }
+    if (this.cubeClicked) {
+      this.onAnimationState = true;
       const timeline = gsap.timeline();
       let initialQ = this.camera.quaternion.clone();
       let lerp = new Quaternion().slerpQuaternions(
@@ -118,126 +112,232 @@ export default class Controls implements OnDestroy {
       );
 
       switch (this.intersectionEvent) {
-        case 'faceOne':
-          initialQ = this.camera.quaternion.clone();
-          lerp = new Quaternion().slerpQuaternions(
-            initialQ,
-            new Quaternion().setFromEuler(
-              new THREE.Euler(0, Math.PI / 6, -Math.PI / 2)
-            ),
-            1
-          );
+        case 'CityFace':
           this.orbitControls.enabled = false;
-
           timeline
             .to(
-              this.camera.quaternion,
-              {
-                x: lerp.x,
-                y: lerp.y,
-                z: lerp.z,
-                w: lerp.w,
-              },
-              'same'
-            )
-            .to(
-              this.camera.position,
-              {
-                x: 3,
-                y: -0.5,
-                z: 2,
-                ease: 'power2',
-                onComplete: () => {
-                  setTimeout(() => {
-                    timeline.reverse();
-                  }, 2000);
-                },
-                onReverseComplete: () => {
-                  this.orbitControls.enabled = true;
-                },
-              },
-              'same'
-            );
-          break;
-        case 'faceTwo':
-          initialQ = this.camera.quaternion.clone();
-          lerp = new Quaternion().slerpQuaternions(
-            initialQ,
-            new Quaternion().setFromEuler(new THREE.Euler(Math.PI / 2, 0, 0)),
-            1
-          );
-          this.orbitControls.enabled = false;
-
-          timeline
-            .to(
-              this.camera.quaternion,
-              {
-                x: lerp.x,
-                y: lerp.y,
-                z: lerp.z,
-                w: lerp.w,
-              },
-              'same'
-            )
-            .to(
-              this.camera.position,
+              this.scene.children[0].rotation,
               {
                 x: 0,
-                y: -4,
-                z: 2.5,
-                ease: 'power2',
-                onComplete: () => {
-                  setTimeout(() => {
-                    timeline.reverse();
-                  }, 2000);
-                },
-                onReverseComplete: () => {
-                  this.orbitControls.enabled = true;
-                },
-              },
-              'same'
-            );
-          break;
-        case 'faceThree':
-          initialQ = this.camera.quaternion.clone();
-          lerp = new Quaternion().slerpQuaternions(
-            initialQ,
-            new Quaternion().setFromEuler(new THREE.Euler(0, 0, Math.PI / 2)),
-            1
-          );
-          this.orbitControls.enabled = false;
-
-          timeline
-            .to(
-              this.camera.quaternion,
-              {
-                x: lerp.x,
-                y: lerp.y,
-                z: lerp.z,
-                w: lerp.w,
+                y: 0,
+                z: -Math.PI / 2,
+                duration: 2,
               },
               'same'
             )
             .to(
               this.camera.position,
               {
-                x: -2,
-                y: -0.25,
-                z: 2.5,
+                x: -0.5,
+                y: 1.5,
+                z: 2,
+                duration: 2,
                 ease: 'power2',
+                onUpdate: () => {
+                  this.camera.lookAt(-0.5, 1.5, 0);
+                },
                 onComplete: () => {
-                  setTimeout(() => {
-                    timeline.reverse();
-                  }, 2000);
+                  this.orbitControls.maxPolarAngle = Math.PI / 2;
+                  this.orbitControls.minPolarAngle = -Math.PI / 4;
+                  this.orbitControls.target = new THREE.Vector3(-0.5, 1.5, 0);
+                  this.orbitControls.update();
+                  this.orbitControls.enabled = true;
+                  this.listenerToReverseAnimation = () => {
+                    this.orbitControls.target = new THREE.Vector3();
+                    this.orbitControls.maxPolarAngle = Math.PI;
+                    this.orbitControls.minPolarAngle = 0;
+                    this.orbitControls.update();
+                    this.orbitControls.enabled = false;
+                    gsap.to(this.camera.position, {
+                      x: -0.5,
+                      y: 1.5,
+                      z: 2,
+                      duration: 2,
+                      ease: 'power2',
+                      onUpdate: () => {
+                        this.camera.lookAt(-0.5, 1.5, 0);
+                      },
+                      onComplete: () => {
+                        window.removeEventListener(
+                          'dblclick',
+                          this.listenerToReverseAnimation,
+                          false
+                        );
+                        timeline.reverse();
+                      },
+                    });
+                  };
+                  window.addEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation,
+                    false
+                  );
                 },
                 onReverseComplete: () => {
                   this.orbitControls.enabled = true;
+                  this.onAnimationState = false;
                 },
               },
               'same'
             );
           break;
-        case 'faceFour':
+        case 'DoorFace':
+          this.orbitControls.enabled = false;
+          timeline.to(
+            this.camera.position,
+            {
+              x: 0,
+              y: -1,
+              z: 2.65,
+              duration: 2,
+              ease: 'power2',
+              onUpdate: () => {
+                this.camera.lookAt(0, 0, 0);
+              },
+              onComplete: () => {
+                this.scene.children[1].visible = true;
+                this.scene.children[0].children.forEach((child) => {
+                  if (child.name === 'Door_Door') {
+                    gsap.to(child.rotation, {
+                      x: 0,
+                      y: -Math.PI * 0.1,
+                      z: 0,
+                      duration: 2,
+                      ease: 'elastic.out(1, 0.75)',
+                    });
+                  }
+                });
+                this.orbitControls.target = new THREE.Vector3(0, 0, 0);
+                this.orbitControls.maxAzimuthAngle = Math.PI / 12;
+                this.orbitControls.minAzimuthAngle = -Math.PI / 12;
+                this.orbitControls.maxPolarAngle = Math.PI * 0.65;
+                this.orbitControls.minPolarAngle = Math.PI * 0.55;
+                this.orbitControls.update();
+                this.orbitControls.enabled = true;
+                this.listenerToReverseAnimation = () => {
+                  this.orbitControls.maxPolarAngle = Math.PI;
+                  this.orbitControls.minPolarAngle = 0;
+                  this.orbitControls.maxAzimuthAngle = Infinity;
+                  this.orbitControls.minAzimuthAngle = Infinity;
+                  this.orbitControls.update();
+                  this.orbitControls.enabled = false;
+                  this.scene.children[0].children.forEach((child) => {
+                    if (child.name === 'Door_Door') {
+                      gsap.to(child.rotation, {
+                        x: 0,
+                        y: 0,
+                        z: 0,
+                        duration: 0.5,
+                        ease: 'power2',
+                      });
+                    }
+                  });
+                  gsap.to(this.camera.position, {
+                    x: 0,
+                    y: -1,
+                    z: 2.65,
+                    ease: 'power2',
+                    onUpdate: () => {
+                      this.camera.lookAt(0, 0, 0);
+                    },
+                    onComplete: () => {
+                      window.removeEventListener(
+                        'dblclick',
+                        this.listenerToReverseAnimation,
+                        false
+                      );
+                      timeline.reverse();
+                    },
+                  });
+                };
+                window.addEventListener(
+                  'dblclick',
+                  this.listenerToReverseAnimation,
+                  false
+                );
+              },
+              onReverseComplete: () => {
+                this.orbitControls.enabled = true;
+                this.scene.children[1].visible = false;
+                this.onAnimationState = false;
+              },
+            },
+            'same'
+          );
+          break;
+        case 'NatureFace':
+          this.orbitControls.enabled = false;
+          timeline
+            .to(
+              this.scene.children[0].rotation,
+              {
+                x: 0,
+                y: 0,
+                z: Math.PI / 2,
+                duration: 2,
+              },
+              'same'
+            )
+            .to(
+              this.camera.position,
+              {
+                x: 0.5,
+                y: 1.5,
+                z: 2,
+                duration: 2,
+                ease: 'power2',
+                onUpdate: () => {
+                  this.camera.lookAt(0.5, 1.5, 0);
+                },
+                onComplete: () => {
+                  this.orbitControls.maxPolarAngle = Math.PI / 2;
+                  this.orbitControls.minPolarAngle = -Math.PI / 4;
+                  this.orbitControls.target = new THREE.Vector3(0.5, 1.5, 0);
+                  this.orbitControls.update();
+                  this.orbitControls.enabled = true;
+                  this.listenerToReverseAnimation = () => {
+                    this.orbitControls.target = new THREE.Vector3();
+                    this.orbitControls.maxPolarAngle = Math.PI;
+                    this.orbitControls.minPolarAngle = 0;
+                    this.orbitControls.update();
+                    this.orbitControls.enabled = false;
+                    gsap.to(this.camera.position, {
+                      x: 0.5,
+                      y: 1.5,
+                      z: 2,
+                      duration: 2,
+                      ease: 'power2',
+                      onUpdate: () => {
+                        this.camera.lookAt(0.5, 1.5, 0);
+                      },
+                      onComplete: () => {
+                        window.removeEventListener(
+                          'dblclick',
+                          this.listenerToReverseAnimation,
+                          false
+                        );
+                        timeline.reverse();
+                      },
+                    });
+                  };
+                  window.addEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation,
+                    false
+                  );
+                },
+                onReverseComplete: () => {
+                  this.onAnimationState = false;
+                  console.log(this.scene.children[0]);
+                  setTimeout(() => {
+                    this.orbitControls.enabled = true;
+                  }, 1000);
+                },
+              },
+              'same'
+            );
+          break;
+        case 'SnakeFace':
           initialQ = this.camera.quaternion.clone();
           // lerp = new Quaternion().slerpQuaternions(
           //   initialQ,
@@ -256,12 +356,21 @@ export default class Controls implements OnDestroy {
                 this.camera.lookAt(new THREE.Vector3());
               },
               onComplete: () => {
-                setTimeout(() => {
+                this.listenerToReverseAnimation = () => {
                   timeline.reverse();
-                }, 2000);
+                };
+                window.addEventListener(
+                  'dblclick',
+                  this.listenerToReverseAnimation
+                );
               },
               onReverseComplete: () => {
                 this.orbitControls.enabled = true;
+                window.removeEventListener(
+                  'dblclick',
+                  this.listenerToReverseAnimation
+                );
+                this.onAnimationState = false;
               },
             })
             .to(this.camera.position, {
@@ -275,7 +384,7 @@ export default class Controls implements OnDestroy {
             });
           this.callSnakeGameRunner();
           break;
-        case 'faceFive':
+        case 'SkateFace':
           initialQ = this.camera.quaternion.clone();
           lerp = new Quaternion().slerpQuaternions(
             initialQ,
@@ -306,19 +415,28 @@ export default class Controls implements OnDestroy {
                 z: 2,
                 ease: 'power2',
                 onComplete: () => {
-                  setTimeout(() => {
+                  this.listenerToReverseAnimation = () => {
                     timeline.reverse();
-                  }, 2000);
+                  };
+                  window.addEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation
+                  );
                 },
                 onReverseComplete: () => {
                   this.orbitControls.enabled = true;
+                  window.removeEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation
+                  );
+                  this.onAnimationState = false;
                 },
               },
               'same'
             );
 
           break;
-        case 'faceSix':
+        case 'SetUpFace':
           initialQ = this.camera.quaternion.clone();
           lerp = new Quaternion().slerpQuaternions(
             initialQ,
@@ -349,12 +467,21 @@ export default class Controls implements OnDestroy {
                 z: 2,
                 ease: 'power2',
                 onComplete: () => {
-                  setTimeout(() => {
+                  this.listenerToReverseAnimation = () => {
                     timeline.reverse();
-                  }, 2000);
+                  };
+                  window.addEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation
+                  );
                 },
                 onReverseComplete: () => {
                   this.orbitControls.enabled = true;
+                  window.removeEventListener(
+                    'dblclick',
+                    this.listenerToReverseAnimation
+                  );
+                  this.onAnimationState = false;
                 },
               },
               'same'
@@ -363,8 +490,7 @@ export default class Controls implements OnDestroy {
         default:
           break;
       }
-
-      // console.log(this.camera.position);
+      this.intersectionEvent = null;
       this.cubeClicked = false;
     }
   }
@@ -377,13 +503,20 @@ export default class Controls implements OnDestroy {
     }
   }
 
+  setLinearRotation(axis: string, speed: number, direction: number) {
+    this.linearRotationSetted = true;
+    this.linearRotationAxis = axis;
+    this.linearRotationSpeed = speed;
+    this.linearRotationDireccion = direction;
+  }
+
+  runLinearRotation() {}
+
   onPointerMove(event: MouseEvent) {
     // calculate pointer position in normalized device coordinates
     // (-1 to +1) for both components
-
     this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    // console.log(this.pointer);
   }
 
   setMouseMoveListener() {
@@ -392,7 +525,12 @@ export default class Controls implements OnDestroy {
 
   resize() {}
 
-  update() {}
+  update() {
+    this.onIntersects();
+    if (this.linearRotationSetted) {
+      this.runLinearRotation();
+    }
+  }
 
   ngOnDestroy(): void {
     window.removeEventListener('click', this.onClickCallback);

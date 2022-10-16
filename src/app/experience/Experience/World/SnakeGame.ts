@@ -7,6 +7,7 @@ import Particle from './Snake/SnakeParticles';
 import Config from './Snake/SnakeUtils/Config';
 import { HelperFunctions } from './Snake/SnakeUtils/Helpers';
 import * as dat from 'dat.gui';
+import CubeWorld from './CubeWorld';
 
 @Injectable()
 export default class SnakeGame {
@@ -23,7 +24,7 @@ export default class SnakeGame {
   canvasTexture!: THREE.CanvasTexture;
   snakeControls: SnakeControls;
   history: Array<THREE.Vector2>;
-  gui: dat.GUI;
+  // gui: dat.GUI;
 
   constructor() {
     // Varialbles de juego
@@ -38,11 +39,12 @@ export default class SnakeGame {
     this.snakeControls = new SnakeControls();
     this.food = new SnakeFood(this);
     this.snake = new Snake(this);
+
     if (this.config.CTX) this.CTX = this.config.CTX;
 
     this.currentHue = this.food.currentHue;
 
-    this.gui = new dat.GUI();
+    // this.gui = new dat.GUI();
 
     // Textura a partir del canvas del juego
     if (this.config.CTX)
@@ -52,28 +54,28 @@ export default class SnakeGame {
     this.canvasTexture.wrapS = THREE.RepeatWrapping;
     this.canvasTexture.wrapT = THREE.RepeatWrapping;
     this.canvasTexture.mapping = THREE.UVMapping;
-    this.canvasTexture.repeat = new THREE.Vector2(3.8, 4);
-    this.canvasTexture.offset = new THREE.Vector2(-0.97, -0.5);
-    this.canvasTexture.rotation = 1.5708;
-    this.gui
-      .add(this.canvasTexture.repeat, 'x', 0, 5, 0.001)
-      .name('texture.repeat.x');
-    this.gui
-      .add(this.canvasTexture.repeat, 'y', 0, 5, 0.001)
-      .name('texture.repeat.y');
-    this.gui
-      .add(this.canvasTexture.offset, 'x', -2, 2, 0.001)
-      .name('texture.offset.x');
-    this.gui
-      .add(this.canvasTexture.offset, 'y', -2, 2, 0.001)
-      .name('texture.offset.y');
-    this.gui
-      .add(this.canvasTexture.center, 'x', -0.5, 1.5, 0.001)
-      .name('texture.center.x');
-    this.gui
-      .add(this.canvasTexture.center, 'y', -0.5, 1.5, 0.001)
-      .name('texture.center.y');
-    this.gui.add(this.canvasTexture, 'rotation', 0, 5, 0.0001);
+    this.canvasTexture.repeat = new THREE.Vector2(2.998, 2.998);
+    // this.canvasTexture.offset = new THREE.Vector2(0, 0);
+    // this.canvasTexture.rotation = 1.5708;
+    // this.gui
+    //   .add(this.canvasTexture.repeat, 'x', 0, 5, 0.001)
+    //   .name('texture.repeat.x');
+    // this.gui
+    //   .add(this.canvasTexture.repeat, 'y', 0, 5, 0.001)
+    //   .name('texture.repeat.y');
+    // this.gui
+    //   .add(this.canvasTexture.offset, 'x', -2, 2, 0.001)
+    //   .name('texture.offset.x');
+    // this.gui
+    //   .add(this.canvasTexture.offset, 'y', -2, 2, 0.001)
+    //   .name('texture.offset.y');
+    // this.gui
+    //   .add(this.canvasTexture.center, 'x', -0.5, 1.5, 0.001)
+    //   .name('texture.center.x');
+    // this.gui
+    //   .add(this.canvasTexture.center, 'y', -0.5, 1.5, 0.001)
+    //   .name('texture.center.y');
+    // this.gui.add(this.canvasTexture, 'rotation', 0, 5, 0.0001);
   }
 
   // All functions used above

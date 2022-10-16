@@ -122,4 +122,9 @@ export default class Snake {
       this.total > 3 ? this.selfCollision() : null;
     }
   }
+
+  resetPos() {
+    this.pos = new THREE.Vector2(this.configData.W / 2, this.configData.H / 2);
+    this.dir = new THREE.Vector2(0, 0);
+  }
 }

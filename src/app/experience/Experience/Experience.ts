@@ -1,12 +1,12 @@
 import * as THREE from 'three';
 import { Injectable, OnDestroy } from '@angular/core';
-
 //Types
 import { Subscription } from 'rxjs';
 
 // Utils
 import { Sizes } from './Utils/Sizes';
 import Time from './Utils/Time';
+import { EventEmitter } from '@angular/core';
 
 // Scene
 import Camera from './Camera';
@@ -27,11 +27,15 @@ export class Experience implements OnDestroy {
   world: World;
   controls!: Controls;
   worldLoadedEvent: Subscription;
+  playSnakeGame!: EventEmitter<string>;
+  finishExperienceEvent: EventEmitter<string>;
 
   constructor(public canvas: HTMLCanvasElement) {
     //Utils
     this.sizes = new Sizes();
     this.timer = new Time();
+    this.playSnakeGame = new EventEmitter();
+    this.finishExperienceEvent = new EventEmitter();
 
     // Basic Scene
     this.scene = new THREE.Scene();
@@ -50,13 +54,15 @@ export class Experience implements OnDestroy {
         this.timerEvent = this.timer.event.subscribe(() => {
           this.update();
         });
-        this.snakeGamePlayEvent = this.controls.snakeGameOnRun.subscribe(
-          (msg) => {
-            console.log(msg);
-          }
-        );
+        this.controls.snakeGameOnRun.subscribe(() => {
+          this.playSnakeGame.emit('Run');
+        });
       }
     );
+  }
+
+  finishExperience() {
+    this.finishExperienceEvent.emit('Experience Finished');
   }
 
   resize() {
@@ -74,6 +80,5 @@ export class Experience implements OnDestroy {
   ngOnDestroy(): void {
     this.resizeEvent.unsubscribe();
     this.timerEvent.unsubscribe();
-    this.snakeGamePlayEvent.unsubscribe();
   }
 }

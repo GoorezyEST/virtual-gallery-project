@@ -5,9 +5,6 @@ import { Experience } from '../Experience';
 import { Sizes } from '../Utils/Sizes';
 import SnakeGame from './SnakeGame';
 import { EventEmitter } from '@angular/core';
-import gsap from 'gsap';
-import * as dat from 'dat.gui';
-import { BoxHelper } from 'three';
 
 export default class CubeWorld {
   sizes: Sizes;
@@ -27,8 +24,9 @@ export default class CubeWorld {
   animationMixer!: THREE.AnimationMixer;
   skateAnimation!: THREE.AnimationAction;
   fixPlane!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+  cubeDoor!: THREE.Object3D<THREE.Event>;
 
-  constructor(private experience: Experience) {
+  constructor(public experience: Experience) {
     this.sizes = this.experience.sizes;
     this.scene = this.experience.scene;
     this.canvas = this.experience.canvas;
@@ -38,7 +36,7 @@ export default class CubeWorld {
     this.loadedEventEmitter = new EventEmitter();
 
     // SnakeGame Instance
-    this.snakeGame = new SnakeGame();
+    this.snakeGame = new SnakeGame(this);
 
     this.loadCubeWorldModel();
   }
@@ -77,6 +75,9 @@ export default class CubeWorld {
               child.children.splice(i, 1);
             }
           });
+        }
+        if (child.name === 'Door_Door') {
+          this.cubeDoor = child;
         }
       });
 

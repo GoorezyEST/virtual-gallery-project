@@ -8,6 +8,7 @@ import Config from './Snake/SnakeUtils/Config';
 import { HelperFunctions } from './Snake/SnakeUtils/Helpers';
 import * as dat from 'dat.gui';
 import CubeWorld from './CubeWorld';
+import { Subscription } from 'rxjs';
 
 @Injectable()
 export default class SnakeGame {
@@ -24,10 +25,17 @@ export default class SnakeGame {
   canvasTexture!: THREE.CanvasTexture;
   snakeControls: SnakeControls;
   history: Array<THREE.Vector2>;
-  // gui: dat.GUI;
-
-  constructor() {
+  startGame: boolean = false;
+  iterate: number;
+  constructor(private enviroment: CubeWorld) {
+    //////
     // Varialbles de juego
+    this.enviroment.experience.playSnakeGame.subscribe(() => {
+      this.reset();
+      this.config.isGameOver = false;
+      this.startGame = true;
+    });
+
     this.score = 0;
     this.maxScore = window.localStorage.getItem('maxScore') || undefined;
     this.particles = [];
@@ -44,8 +52,6 @@ export default class SnakeGame {
 
     this.currentHue = this.food.currentHue;
 
-    // this.gui = new dat.GUI();
-
     // Textura a partir del canvas del juego
     if (this.config.CTX)
       this.canvasTexture = new THREE.CanvasTexture(this.config.CTX.canvas);
@@ -55,33 +61,38 @@ export default class SnakeGame {
     this.canvasTexture.wrapT = THREE.RepeatWrapping;
     this.canvasTexture.mapping = THREE.UVMapping;
     this.canvasTexture.repeat = new THREE.Vector2(2.998, 2.998);
-    // this.canvasTexture.offset = new THREE.Vector2(0, 0);
-    // this.canvasTexture.rotation = 1.5708;
-    // this.gui
-    //   .add(this.canvasTexture.repeat, 'x', 0, 5, 0.001)
-    //   .name('texture.repeat.x');
-    // this.gui
-    //   .add(this.canvasTexture.repeat, 'y', 0, 5, 0.001)
-    //   .name('texture.repeat.y');
-    // this.gui
-    //   .add(this.canvasTexture.offset, 'x', -2, 2, 0.001)
-    //   .name('texture.offset.x');
-    // this.gui
-    //   .add(this.canvasTexture.offset, 'y', -2, 2, 0.001)
-    //   .name('texture.offset.y');
-    // this.gui
-    //   .add(this.canvasTexture.center, 'x', -0.5, 1.5, 0.001)
-    //   .name('texture.center.x');
-    // this.gui
-    //   .add(this.canvasTexture.center, 'y', -0.5, 1.5, 0.001)
-    //   .name('texture.center.y');
-    // this.gui.add(this.canvasTexture, 'rotation', 0, 5, 0.0001);
+
+    this.iterate = 0;
+  }
+
+  drawIntro() {
+    if (this.iterate === 100) {
+      this.iterate = 0;
+    }
+    this.CTX.globalCompositeOperation = 'lighter';
+    this.CTX.shadowBlur = 0;
+    this.CTX.shadowColor = 'hsl(0, 0%,0%)';
+    this.CTX.globalCompositeOperation = 'source-over';
+    this.CTX.shadowBlur = 0;
+    this.CTX.fillStyle = '#4cffd7';
+    this.CTX.textAlign = 'center';
+    if (this.iterate > 50) {
+      this.CTX.font = 'bold 15px sans-serif';
+      this.CTX.fillText('SNAKE GAME', this.config.W / 2, this.config.H / 2);
+      this.CTX.font = '10px sans-serif';
+      this.CTX.fillText(
+        'CLICK TO PLAY',
+        this.config.W / 2,
+        this.config.H / 2 + 80
+      );
+    } else {
+      this.CTX.clearRect(0, 0, this.config.W, this.config.W);
+    }
   }
 
   // All functions used above
   incrementScore() {
     this.score++;
-    // dom_score.innerText = score.toString().padStart(2, '0');
   }
 
   particleSplash() {
@@ -105,22 +116,27 @@ export default class SnakeGame {
   }
 
   loop() {
-    this.clear();
-    if (!this.config.isGameOver) {
-      this.helpers.drawGrid();
-      this.snake.update();
-      this.food.draw();
-      this.currentHue = this.food.currentHue;
-
-      for (let p of this.particles) {
-        p.update();
-      }
-      this.helpers.garbageCollector();
-    } else {
+    if (this.startGame) {
       this.clear();
-      this.GameOver();
+      if (!this.config.isGameOver) {
+        this.helpers.drawGrid();
+        this.snake.update();
+        this.food.draw();
+        this.currentHue = this.food.currentHue;
+
+        for (let p of this.particles) {
+          p.update();
+        }
+        this.helpers.garbageCollector();
+      } else {
+        this.clear();
+        this.GameOver();
+      }
+      this.config.isGameOver = this.snake.isGameOver;
+    } else {
+      this.drawIntro();
+      this.iterate++;
     }
-    this.config.isGameOver = this.snake.isGameOver;
   }
 
   GameOver() {
@@ -130,9 +146,9 @@ export default class SnakeGame {
     if (this.CTX) {
       this.CTX.fillStyle = '#4cffd7';
       this.CTX.textAlign = 'center';
-      this.CTX.font = 'bold 30px, sans-serif';
+      this.CTX.font = 'bold 15px sans-serif';
       this.CTX.fillText('GAME OVER', this.config.W / 2, this.config.H / 2);
-      this.CTX.font = '15px, sans-serif';
+      this.CTX.font = '10px sans-serif';
       this.CTX.fillText(
         `SCORE ${this.score}`,
         this.config.W / 2,
@@ -150,6 +166,7 @@ export default class SnakeGame {
     // dom_score.innerText = '00';
     this.score = 0;
     this.snake = new Snake(this);
+    this.snake.resetPos();
     this.food.spawn();
     this.snake.KEY.resetState();
     this.config.isGameOver = false;

@@ -259,6 +259,6 @@ export class CubeProjectComponent implements AfterViewInit {
   }
 
   returnGallery() {
-    this.router.navigate(['experience/gallery']);
+    this.router.navigate(['gallery']);
   }
 }

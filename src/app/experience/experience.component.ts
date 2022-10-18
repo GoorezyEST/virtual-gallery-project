@@ -55,7 +55,7 @@ export class ExperienceComponent implements AfterViewInit, OnDestroy {
       this.experienceLoaded = true;
     });
     this.experience.finishExperienceEvent.subscribe(() => {
-      this.router.navigate(['experience/gallery']);
+      this.router.navigate(['gallery']);
     });
     if (navigator.userAgent.includes('Mobile')) {
       this.experience.playSnakeGame.subscribe(() => {

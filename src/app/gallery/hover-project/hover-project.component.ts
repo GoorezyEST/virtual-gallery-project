@@ -20,6 +20,6 @@ export class HoverProjectComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['experience/gallery']);
+    this.router.navigate(['gallery']);
   }
 }

@@ -12,6 +12,6 @@ export class CardProjectComponent implements OnInit {
   ngOnInit(): void {}
 
   returnGallery() {
-    this.router.navigate(['experience/gallery']);
+    this.router.navigate(['gallery']);
   }
 }

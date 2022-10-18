@@ -8,13 +8,13 @@ import { HoverProjectComponent } from './gallery/hover-project/hover-project.com
 import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   { path: '', component: ExperienceComponent, pathMatch: 'full' },
-  { path: 'experience/gallery', component: GalleryComponent },
-  { path: 'experience/gallery/project-card', component: CardProjectComponent },
+  { path: 'gallery', component: GalleryComponent },
+  { path: 'gallery/project-card', component: CardProjectComponent },
   {
-    path: 'experience/gallery/project-hover-lights',
+    path: 'gallery/project-hover-lights',
     component: HoverProjectComponent,
   },
-  { path: 'experience/gallery/project-cube', component: CubeProjectComponent },
+  { path: 'gallery/project-cube', component: CubeProjectComponent },
   { path: '**', component: NotFoundComponent },
 ];
 

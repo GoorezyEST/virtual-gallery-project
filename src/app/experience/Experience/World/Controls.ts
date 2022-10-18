@@ -382,6 +382,7 @@ export default class Controls implements OnDestroy {
             );
           break;
         case 'SnakeFace':
+          // let onReverseState = false;
           let quat = new Quaternion(
             -4.7594873874070785e-18,
             0.9969745769424118,
@@ -392,7 +393,7 @@ export default class Controls implements OnDestroy {
           let posY = -1;
           if (this.pointerType === 'click') {
             posZ = -3.25;
-            posY = 0;
+            posY = -1.85;
           }
           this.timeline.to(
             this.camera.position,
@@ -403,19 +404,11 @@ export default class Controls implements OnDestroy {
               duration: 2,
               ease: 'power2',
               onUpdate: () => {
-                if (this.pointerType === 'click') {
-                  this.camera.quaternion.slerp(quat, 0.05);
-                } else {
-                  this.camera.lookAt(0, 0, 0);
-                }
+                this.camera.lookAt(0, 0, 0);
               },
               onComplete: () => {
                 this.callSnakeGameRunner();
-                if (this.pointerType === 'click') {
-                  this.orbitControls.target = new THREE.Vector3(0, -0.8, 0);
-                } else {
-                  this.orbitControls.target = new THREE.Vector3(0, 0, 0);
-                }
+                this.orbitControls.target = new THREE.Vector3(0, 0, 0);
                 this.orbitControls.maxAzimuthAngle = Math.PI;
                 this.orbitControls.minAzimuthAngle = Math.PI;
                 this.orbitControls.maxPolarAngle = Math.PI * 0.65;
@@ -433,23 +426,20 @@ export default class Controls implements OnDestroy {
                     } else {
                       this.experience.world.cubeWorld.snakeGame.startGame =
                         false;
+                      this.orbitControls.enabled = false;
+                      this.orbitControls.target = new THREE.Vector3(0, 0, 0);
                       this.orbitControls.maxPolarAngle = Math.PI;
                       this.orbitControls.minPolarAngle = 0;
                       this.orbitControls.maxAzimuthAngle = Infinity;
                       this.orbitControls.minAzimuthAngle = Infinity;
                       this.orbitControls.update();
-                      this.orbitControls.enabled = false;
                       gsap.to(this.camera.position, {
                         x: 0,
-                        y: 0,
+                        y: posY,
                         z: posZ,
                         ease: 'power2',
                         onUpdate: () => {
-                          if (this.pointerType === 'click') {
-                            this.camera.quaternion.slerp(quat, 0.05);
-                          } else {
-                            this.camera.lookAt(0, 0, 0);
-                          }
+                          this.camera.lookAt(0, 0, 0);
                         },
                         onComplete: () => {
                           window.removeEventListener(
@@ -472,6 +462,7 @@ export default class Controls implements OnDestroy {
               onReverseComplete: () => {
                 this.orbitControls.enabled = true;
                 this.onAnimationState = false;
+                // onReverseState = false;
               },
             },
             'same'

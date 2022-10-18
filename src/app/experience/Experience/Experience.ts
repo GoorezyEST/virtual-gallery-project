@@ -31,6 +31,7 @@ export class Experience implements OnDestroy {
   experienceLoaded: EventEmitter<string>;
   playSnakeGame!: EventEmitter<string>;
   finishExperienceEvent: EventEmitter<string>;
+  setGeneralControls: () => void;
 
   constructor(public canvas: HTMLCanvasElement) {
     if (navigator.userAgent.includes('Mobile')) {
@@ -48,12 +49,19 @@ export class Experience implements OnDestroy {
     this.scene = new THREE.Scene();
     this.world = new World(this);
 
+    // Control Controls Setting Time
+    this.setGeneralControls = () => {
+      this.controls = new Controls(this);
+      this.controls.snakeGameOnRun.subscribe(() => {
+        this.playSnakeGame.emit('Run');
+      });
+    };
+
     this.worldLoadedEvent = this.world.cubeWorld.loadedEventEmitter.subscribe(
       () => {
         this.experienceLoaded.emit('Experience Loaded');
         this.camera = new Camera(this);
         this.renderer = new Renderer(this);
-        this.controls = new Controls(this);
 
         // Events Listening
         this.resizeEvent = this.sizes.event.subscribe(() => {
@@ -61,9 +69,6 @@ export class Experience implements OnDestroy {
         });
         this.timerEvent = this.timer.event.subscribe(() => {
           this.update();
-        });
-        this.controls.snakeGameOnRun.subscribe(() => {
-          this.playSnakeGame.emit('Run');
         });
       }
     );
@@ -80,10 +85,12 @@ export class Experience implements OnDestroy {
   }
 
   update() {
-    this.world.update();
-    this.camera.update();
-    this.controls.update();
-    this.renderer.update();
+    if (this.controls) {
+      this.world.update();
+      this.camera.update();
+      this.controls.update();
+      this.renderer.update();
+    }
   }
   ngOnDestroy(): void {
     this.resizeEvent.unsubscribe();

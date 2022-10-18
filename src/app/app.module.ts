@@ -5,7 +5,6 @@ import { AppComponent } from './app.component';
 import { ThreeModule } from './experience/three.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 //Components Imports
-import { HeaderComponent } from './header/header.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { CardProjectComponent } from './gallery/card-project/card-project.component';
@@ -15,7 +14,6 @@ import { CubeProjectComponent } from './gallery/cube-project/cube-project.compon
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
     NotFoundComponent,
     GalleryComponent,
     CardProjectComponent,

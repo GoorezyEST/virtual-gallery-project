@@ -5,11 +5,9 @@ import { CardProjectComponent } from './gallery/card-project/card-project.compon
 import { CubeProjectComponent } from './gallery/cube-project/cube-project.component';
 import { GalleryComponent } from './gallery/gallery.component';
 import { HoverProjectComponent } from './gallery/hover-project/hover-project.component';
-import { HeaderComponent } from './header/header.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
-  { path: '', component: HeaderComponent, pathMatch: 'full' },
-  { path: 'experience', component: ExperienceComponent },
+  { path: '', component: ExperienceComponent, pathMatch: 'full' },
   { path: 'experience/gallery', component: GalleryComponent },
   { path: 'experience/gallery/project-card', component: CardProjectComponent },
   {

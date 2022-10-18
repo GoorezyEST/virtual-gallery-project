@@ -21,7 +21,6 @@ export default class World {
     this.cubeWorld = new CubeWorld(experience);
 
     this.cubeWorld.loadedEventEmitter.subscribe(() => {
-      this.cubeWorld.snakeGame.initialize();
       this.snakeReady = true;
     });
   }

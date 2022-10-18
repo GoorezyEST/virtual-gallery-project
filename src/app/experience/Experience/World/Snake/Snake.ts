@@ -97,6 +97,7 @@ export default class Snake {
       let p = this.history[i];
       if (this.helpers.isCollision(this.pos, p)) {
         this.isGameOver = true;
+        this.snakeGame.snakeControls.killListener();
       }
     }
   }
@@ -121,10 +122,5 @@ export default class Snake {
       this.delay = 8;
       this.total > 3 ? this.selfCollision() : null;
     }
-  }
-
-  resetPos() {
-    this.pos = new THREE.Vector2(this.configData.W / 2, this.configData.H / 2);
-    this.dir = new THREE.Vector2(0, 0);
   }
 }

@@ -6,3 +6,501 @@
   align-items: center;
   font-family: "Codec Cold Trial", sans-serif;
 }
+///////////////////////////////////////
+
+//BreakPoints
+$big: 470px;
+$medium: 360px;
+$small: 260px;
+$smallest: 200px;
+
+.wrapper {
+  opacity: 1;
+  animation: dissolve 2s linear 1 forwards;
+  animation-play-state: paused;
+  display: block;
+}
+
+@keyframes dissolve {
+  to {
+    opacity: 0;
+  }
+}
+
+.experience-controls-explanation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: "Codec Cold Trial", sans-serif;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.95);
+  font-size: 32px;
+  display: none;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  animation: appearAndDisolve 6s linear forwards;
+  animation-play-state: paused;
+
+  @media screen and (max-width: $big) {
+    font-size: 24px;
+  }
+  @media screen and (max-width: $small) {
+    font-size: 20px;
+  }
+  @media screen and (max-width: $smallest) {
+    font-size: 16px;
+  }
+}
+
+@keyframes appearAndDisolve {
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.experience_mobile_controls {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-row-gap: 5px;
+  grid-column-gap: 5px;
+  width: 60vw;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  justify-items: center;
+  align-items: center;
+  z-index: 9999;
+
+  & img {
+    width: 100%;
+  }
+
+  &_up {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+  &_left {
+    justify-self: end;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+  }
+  &_down {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+  }
+  &_right {
+    justify-self: start;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+  }
+}
+
+.pass-experience {
+  display: flex;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  text-align: left;
+  font-family: "Codec Cold Trial", sans-serif;
+  font-size: 20px;
+  color: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  opacity: 0;
+  animation: appear 1s linear 10s 1 forwards;
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.header_text {
+  display: flex;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  background-color: black;
+  font-family: "Codec Cold Trial", sans-serif;
+  opacity: 1;
+  transition: all 2s linear;
+
+  &__title {
+    display: flex;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: default;
+    pointer-events: none;
+
+    @media screen and (max-width: $big) {
+      font-size: 24px;
+    }
+    @media screen and (max-width: $small) {
+      font-size: 20px;
+    }
+    @media screen and (max-width: $smallest) {
+      font-size: 16px;
+    }
+
+    &-char {
+      display: inline-block;
+    }
+
+    & .v {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1s 1 forwards;
+    }
+    & .i {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.2s 1 forwards;
+    }
+    & .r {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.4s 1 forwards;
+    }
+    & .t {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.6s 1 forwards;
+    }
+    & .u {
+      visibility: hidden;
+      animation: rotation 0.3s linear 1.8s 1 forwards;
+    }
+    & .a {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2s 1 forwards;
+    }
+    & .l {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.2s 1 forwards;
+    }
+    & .g {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.4s 1 forwards;
+    }
+    & .a2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.6s 1 forwards;
+    }
+    & .l2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 2.8s 1 forwards;
+    }
+    & .l3 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3s 1 forwards;
+    }
+    & .e {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.2s 1 forwards;
+    }
+    & .r2 {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.4s 1 forwards;
+    }
+    & .y {
+      visibility: hidden;
+      animation: rotation 0.3s linear 3.6s 1 forwards;
+    }
+  }
+
+  &__slogan {
+    font-size: 24px;
+    font-weight: normal;
+    opacity: 0;
+    cursor: default;
+    pointer-events: none;
+    margin-top: 12px;
+    animation: fadeIn 1s linear 4s 1 forwards;
+
+    @media screen and (max-width: $big) {
+      font-size: 16px;
+    }
+    @media screen and (max-width: $small) {
+      font-size: 12px;
+    }
+    @media screen and (max-width: $smallest) {
+      font-size: 8px;
+    }
+  }
+
+  &__img {
+    margin-top: 24px;
+    width: 32px;
+    opacity: 0;
+    cursor: pointer;
+    animation: fadeIn 1s linear 4.4s 1 forwards;
+    transition: all 0.3s;
+
+    @media screen and (max-width: $big) {
+      width: 24px;
+    }
+    @media screen and (max-width: $small) {
+      width: 20px;
+    }
+    @media screen and (max-width: $smallest) {
+      width: 16px;
+    }
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &:active {
+      transform: scale(0.9) translateY(-4px);
+    }
+  }
+}
+
+.about {
+  display: flex;
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  font-family: "Codec Cold Trial", sans-serif;
+
+  &__first {
+    width: 350px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: $big) {
+      width: 250px;
+    }
+    @media screen and (max-width: $small) {
+      width: 180px;
+    }
+    @media screen and (max-width: $smallest) {
+      width: 125px;
+    }
+
+    &__title {
+      font-size: 32px;
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: normal;
+      font-style: italic;
+      cursor: default;
+
+      @media screen and (max-width: $big) {
+        font-size: 24px;
+      }
+      @media screen and (max-width: $small) {
+        font-size: 20px;
+      }
+      @media screen and (max-width: $smallest) {
+        font-size: 16px;
+      }
+    }
+
+    &__desc {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 12px;
+      transform: translateX(-50px);
+      font-weight: lighter;
+      font-style: italic;
+      cursor: default;
+
+      @media screen and (max-width: $big) {
+        font-size: 12px;
+      }
+      @media screen and (max-width: $medium) {
+        transform: translateX(0px);
+      }
+      @media screen and (max-width: $small) {
+        font-size: 10px;
+      }
+      @media screen and (max-width: $smallest) {
+        font-size: 8px;
+      }
+    }
+
+    &__inf {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.6);
+      margin-top: 16px;
+      transform: translateX(50px);
+      font-weight: lighter;
+      font-style: italic;
+      cursor: default;
+      transition: all 0.3s;
+
+      @media screen and (max-width: $big) {
+        font-size: 12px;
+      }
+      @media screen and (max-width: $medium) {
+        transform: translateX(0px);
+      }
+      @media screen and (max-width: $small) {
+        font-size: 10px;
+      }
+      @media screen and (max-width: $smallest) {
+        font-size: 8px;
+      }
+    }
+
+    &__line {
+      border: none;
+      height: 0.5px;
+      margin-top: 16px;
+      width: 75px;
+      background-color: rgba(255, 255, 255, 0.085);
+    }
+  }
+}
+
+.links {
+  position: absolute;
+  z-index: 10000;
+  width: 150px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0 12px 0;
+  left: 12px;
+  font-family: "Codec Cold Trial", sans-serif;
+  font-weight: bold;
+
+  @media screen and (max-width: $small) {
+    font-size: 10px;
+    width: 90px;
+  }
+
+  &__home {
+    transition: all 0.3s;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &__about {
+    transition: all 0.3s;
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+.active-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/// SPINNER
+///
+.lds-ellipsis {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  opacity: 0;
+  animation: fadeIn 1s linear 5s 1 forwards;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+@keyframes rotation {
+  0% {
+    visibility: hidden;
+  }
+  50% {
+    visibility: visible;
+    opacity: 0.5;
+  }
+  100% {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  75% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}

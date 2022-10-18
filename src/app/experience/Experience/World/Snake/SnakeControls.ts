@@ -3,6 +3,7 @@ export default class SnakeControls {
   ArrowRight: boolean;
   ArrowDown: boolean;
   ArrowLeft: boolean;
+  listenerCallback!: (e: KeyboardEvent) => void;
 
   constructor() {
     this.ArrowUp = false;
@@ -19,7 +20,7 @@ export default class SnakeControls {
   }
 
   listen() {
-    let listenerCallback = (e: KeyboardEvent): void => {
+    this.listenerCallback = (e: KeyboardEvent): void => {
       if (e.key === 'ArrowUp' && this.ArrowDown) return;
       if (e.key === 'ArrowDown' && this.ArrowUp) return;
       if (e.key === 'ArrowLeft' && this.ArrowRight) return;
@@ -47,6 +48,14 @@ export default class SnakeControls {
           }
         });
     };
-    window.addEventListener('keydown', listenerCallback.bind(this), false);
+    window.addEventListener('keydown', this.listenerCallback.bind(this), false);
+  }
+
+  killListener() {
+    window.removeEventListener(
+      'keydown',
+      this.listenerCallback.bind(this),
+      false
+    );
   }
 }

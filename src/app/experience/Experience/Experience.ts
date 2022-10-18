@@ -16,6 +16,7 @@ import Controls from './World/Controls';
 
 @Injectable()
 export class Experience implements OnDestroy {
+  userDeviceType: string = 'dblclick';
   resizeEvent!: Subscription;
   timerEvent!: Subscription;
   snakeGamePlayEvent!: Subscription;
@@ -27,15 +28,21 @@ export class Experience implements OnDestroy {
   world: World;
   controls!: Controls;
   worldLoadedEvent: Subscription;
+  experienceLoaded: EventEmitter<string>;
   playSnakeGame!: EventEmitter<string>;
   finishExperienceEvent: EventEmitter<string>;
 
   constructor(public canvas: HTMLCanvasElement) {
+    if (navigator.userAgent.includes('Mobile')) {
+      this.userDeviceType = 'click';
+    }
+
     //Utils
     this.sizes = new Sizes();
     this.timer = new Time();
     this.playSnakeGame = new EventEmitter();
     this.finishExperienceEvent = new EventEmitter();
+    this.experienceLoaded = new EventEmitter();
 
     // Basic Scene
     this.scene = new THREE.Scene();
@@ -43,6 +50,7 @@ export class Experience implements OnDestroy {
 
     this.worldLoadedEvent = this.world.cubeWorld.loadedEventEmitter.subscribe(
       () => {
+        this.experienceLoaded.emit('Experience Loaded');
         this.camera = new Camera(this);
         this.renderer = new Renderer(this);
         this.controls = new Controls(this);

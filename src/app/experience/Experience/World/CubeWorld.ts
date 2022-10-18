@@ -5,6 +5,7 @@ import { Experience } from '../Experience';
 import { Sizes } from '../Utils/Sizes';
 import SnakeGame from './SnakeGame';
 import { EventEmitter } from '@angular/core';
+import { VideoTexture } from 'three';
 
 export default class CubeWorld {
   sizes: Sizes;
@@ -25,6 +26,16 @@ export default class CubeWorld {
   skateAnimation!: THREE.AnimationAction;
   fixPlane!: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
   cubeDoor!: THREE.Object3D<THREE.Event>;
+  video!: {
+    [name: string]: HTMLVideoElement;
+  };
+  videoTexture!: {
+    [name: string]: VideoTexture;
+  };
+  video2!: { cloudVideo: HTMLVideoElement };
+  videoTexture2!: {
+    [name: string]: VideoTexture;
+  };
 
   constructor(public experience: Experience) {
     this.sizes = this.experience.sizes;
@@ -41,7 +52,47 @@ export default class CubeWorld {
     this.loadCubeWorldModel();
   }
 
+  loadVideoTextures() {
+    this.video = { ['ProgramingVideo']: document.createElement('video') };
+    this.video['ProgramingVideo'].src = 'assets/Experience/tex.mp4';
+    this.video['ProgramingVideo'].muted = true;
+    this.video['ProgramingVideo'].playsInline = true;
+    this.video['ProgramingVideo'].autoplay = true;
+    this.video['ProgramingVideo'].loop = true;
+    this.video['ProgramingVideo'].play();
+
+    this.videoTexture = {
+      ['ProgramingVideo']: new THREE.VideoTexture(
+        this.video['ProgramingVideo']
+      ),
+    };
+    this.videoTexture['ProgramingVideo'].flipY = true;
+    this.videoTexture['ProgramingVideo'].minFilter = THREE.NearestFilter;
+    this.videoTexture['ProgramingVideo'].magFilter = THREE.NearestFilter;
+    this.videoTexture['ProgramingVideo'].generateMipmaps = false;
+    this.videoTexture['ProgramingVideo'].encoding = THREE.sRGBEncoding;
+
+    this.video2 = { ['cloudVideo']: document.createElement('video') };
+    this.video2['cloudVideo'].src = 'assets/Experience/tex2.mp4';
+    this.video2['cloudVideo'].muted = true;
+    this.video2['cloudVideo'].playsInline = true;
+    this.video2['cloudVideo'].autoplay = true;
+    this.video2['cloudVideo'].loop = true;
+    this.video2['cloudVideo'].play();
+
+    this.videoTexture2 = {
+      ['cloudVideo']: new THREE.VideoTexture(this.video2['cloudVideo']),
+    };
+    this.videoTexture2['cloudVideo'].flipY = false;
+    this.videoTexture2['cloudVideo'].minFilter = THREE.NearestFilter;
+    this.videoTexture2['cloudVideo'].magFilter = THREE.NearestFilter;
+    this.videoTexture2['cloudVideo'].generateMipmaps = false;
+    this.videoTexture2['cloudVideo'].encoding = THREE.sRGBEncoding;
+  }
+
   loadCubeWorldModel() {
+    this.loadVideoTextures();
+
     this.gltfLoader.load('assets/Experience/Models/CubeWorld.glb', (model) => {
       const snakeTextureMaterial = new THREE.MeshBasicMaterial({
         map: this.snakeGame.canvasTexture,
@@ -49,6 +100,17 @@ export default class CubeWorld {
       });
       model.scene.children.forEach((child) => {
         // Add SnakeGameTexture On SnakeFace
+
+        if (child.name === 'SetUp_Monitor1__Screen') {
+          (child as THREE.Mesh).material = new THREE.MeshBasicMaterial({
+            map: this.videoTexture2['cloudVideo'],
+          });
+        }
+        if (child.name === 'SetUp_Monitor2__Screen') {
+          (child as THREE.Mesh).material = new THREE.MeshBasicMaterial({
+            map: this.videoTexture['ProgramingVideo'],
+          });
+        }
 
         if (child.name === 'WorldCube') {
           (child.children[5] as THREE.Mesh).material = snakeTextureMaterial;

@@ -1,3 +1,110 @@
+<div class="wrapper">
+  <div class="links">
+    <p
+      class="links__home active-link"
+      (click)="toHome(about, linkOne, linkTwo)"
+      #linkOne
+    >
+      Home
+    </p>
+    <p class="links__about" (click)="toAbout(about, linkOne, linkTwo)" #linkTwo>
+      About Us
+    </p>
+  </div>
+
+  <div class="header_text">
+    <span class="header_text__title">
+      <span class="header_text__title-char v">V</span>
+      <span class="header_text__title-char i">i</span>
+      <span class="header_text__title-char r">r</span>
+      <span class="header_text__title-char t">t</span>
+      <span class="header_text__title-char u">u</span>
+      <span class="header_text__title-char a">a</span>
+      <span class="header_text__title-char l">l</span>
+      <span class="header_text__title-space">&nbsp;</span>
+      <span class="header_text__title-char g">G</span>
+      <span class="header_text__title-char a2">a</span>
+      <span class="header_text__title-char l2">l</span>
+      <span class="header_text__title-char l3">l</span>
+      <span class="header_text__title-char e">e</span>
+      <span class="header_text__title-char r2">r</span>
+      <span class="header_text__title-char y">y</span>
+    </span>
+    <p class="header_text__slogan">Your place to discover art</p>
+    <div class="lds-ellipsis" *ngIf="!experienceLoaded">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <img
+      *ngIf="experienceLoaded"
+      (click)="dissolveToExperience($event)"
+      src="../../assets/door-icon-light.png"
+      alt="A door icon to enter on the 3d render"
+      class="header_text__img"
+    />
+  </div>
+
+  <div class="about hidden" #about>
+    <div class="about__first">
+      <p class="about__first__title">Who we are?</p>
+      <p class="about__first__desc">
+        Our names are Pieris and Goorezy, we are two full stack web developers
+        from Argentina.
+      </p>
+      <p class="about__first__inf">
+        Our main strength on this field is the design and the aesthetic part of
+        web development.
+      </p>
+      <hr class="about__first__line" />
+    </div>
+  </div>
+
+  <div class="pass-experience">
+    <p class="pass-experience__content" (click)="jumpExperience()">
+      Jump to the gallery
+    </p>
+  </div>
+</div>
+
 <div class="experience">
   <canvas #myCanvas class="experience-canvas"></canvas>
+</div>
+
+<div class="experience-controls-explanation">
+  <p class="experience-controls-explanation__content">Hold click to drag.</p>
+  <p class="experience-controls-explanation__content">
+    Double click to Interact.
+  </p>
+  <p class="experience-controls-explanation__content">
+    Double click the door to exit experience.
+  </p>
+</div>
+
+<div class="experience_mobile_controls" *ngIf="experienceMobileControls">
+  <img
+    src="assets/Experience/up.png"
+    alt=""
+    class="experience_mobile_controls_up"
+    (click)="triggerKeydown('up')"
+  />
+  <img
+    src="assets/Experience/left.png"
+    alt=""
+    class="experience_mobile_controls_left"
+    (click)="triggerKeydown('left')"
+  />
+  <img
+    src="assets/Experience/down.png"
+    alt=""
+    class="experience_mobile_controls_down"
+    (click)="triggerKeydown('down')"
+  />
+  <img
+    src="assets/Experience/right.png"
+    alt=""
+    class="experience_mobile_controls_right"
+    (click)="triggerKeydown('right')"
+  />
 </div>

@@ -6,9 +6,8 @@ import SnakeFood from './Snake/SnakeFood';
 import Particle from './Snake/SnakeParticles';
 import Config from './Snake/SnakeUtils/Config';
 import { HelperFunctions } from './Snake/SnakeUtils/Helpers';
-import * as dat from 'dat.gui';
 import CubeWorld from './CubeWorld';
-import { Subscription } from 'rxjs';
+import { EventEmitter } from '@angular/core';
 
 @Injectable()
 export default class SnakeGame {
@@ -27,10 +26,16 @@ export default class SnakeGame {
   history: Array<THREE.Vector2>;
   startGame: boolean = false;
   iterate: number;
+  showGameControls: boolean = false;
+  snakeGameState: EventEmitter<string>;
   constructor(private enviroment: CubeWorld) {
+    this.snakeGameState = new EventEmitter();
     //////
     // Varialbles de juego
     this.enviroment.experience.playSnakeGame.subscribe(() => {
+      if (this.enviroment.experience.userDeviceType === 'click') {
+        this.showGameControls = true;
+      }
       this.reset();
       this.config.isGameOver = false;
       this.startGame = true;
@@ -68,6 +73,7 @@ export default class SnakeGame {
   drawIntro() {
     if (this.iterate === 100) {
       this.iterate = 0;
+      this.snakeGameState.emit('Snake dead');
     }
     this.CTX.globalCompositeOperation = 'lighter';
     this.CTX.shadowBlur = 0;
@@ -112,7 +118,6 @@ export default class SnakeGame {
   //New function not used above
   initialize() {
     this.snakeControls.listen();
-    // dom_replay.addEventListener('click', this.reset, false);
   }
 
   loop() {
@@ -163,13 +168,13 @@ export default class SnakeGame {
   }
 
   reset() {
-    // dom_score.innerText = '00';
-    this.score = 0;
-    this.snake = new Snake(this);
-    this.snake.resetPos();
-    this.food.spawn();
-    this.snake.KEY.resetState();
+    this.initialize();
     this.config.isGameOver = false;
+    this.score = 0;
+    this.history = [];
+    this.food.spawn();
+    this.snake = new Snake(this);
+    this.snake.KEY.resetState();
     this.loop();
   }
 }

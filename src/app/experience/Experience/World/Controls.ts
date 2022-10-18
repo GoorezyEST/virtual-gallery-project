@@ -9,7 +9,6 @@ import { BoxHelper, Quaternion } from 'three';
 @Injectable()
 export default class Controls implements OnDestroy {
   camera: THREE.PerspectiveCamera;
-  // camera: THREE.OrthographicCamera;
   raycaster: THREE.Raycaster;
   pointer: THREE.Vector2;
   scene: THREE.Scene;
@@ -32,8 +31,10 @@ export default class Controls implements OnDestroy {
   timeline!: gsap.core.Timeline;
   cubeDoor: THREE.Object3D<THREE.Event>;
   whitePlane: THREE.Mesh<THREE.PlaneGeometry, THREE.MeshBasicMaterial>;
+  pointerType: string;
 
   constructor(private experience: Experience) {
+    this.pointerType = this.experience.userDeviceType;
     this.camera = this.experience.camera.perspectiveCamera;
     this.orbitControls = this.experience.camera.controls;
     this.scene = this.experience.scene;
@@ -63,7 +64,10 @@ export default class Controls implements OnDestroy {
     this.snakeGameOnRun = new EventEmitter();
 
     // Set click event listener
-    window.addEventListener('dblclick', this.onClickCallback.bind(this));
+    window.addEventListener(
+      `${this.pointerType}`,
+      this.onClickCallback.bind(this)
+    );
 
     this.setMouseMoveListener();
   }
@@ -187,7 +191,7 @@ export default class Controls implements OnDestroy {
                       onComplete: () => {
                         // Removemos el event listener
                         window.removeEventListener(
-                          'dblclick',
+                          `${this.pointerType}`,
                           this.listenerToReverseAnimation,
                           false
                         );
@@ -198,7 +202,7 @@ export default class Controls implements OnDestroy {
                   };
                   // Seteamos el event listener para dispara la callback de retorno a la posicion inicial
                   window.addEventListener(
-                    'dblclick',
+                    `${this.pointerType}`,
                     this.listenerToReverseAnimation,
                     false
                   );
@@ -268,7 +272,7 @@ export default class Controls implements OnDestroy {
                         },
                         onComplete: () => {
                           window.removeEventListener(
-                            'dblclick',
+                            `${this.pointerType}`,
                             this.listenerToReverseAnimation,
                             false
                           );
@@ -278,7 +282,7 @@ export default class Controls implements OnDestroy {
                     }
                   };
                   window.addEventListener(
-                    'dblclick',
+                    `${this.pointerType}`,
                     this.listenerToReverseAnimation,
                     false
                   );
@@ -355,7 +359,7 @@ export default class Controls implements OnDestroy {
                       },
                       onComplete: () => {
                         window.removeEventListener(
-                          'dblclick',
+                          `${this.pointerType}`,
                           this.listenerToReverseAnimation,
                           false
                         );
@@ -364,7 +368,7 @@ export default class Controls implements OnDestroy {
                     });
                   };
                   window.addEventListener(
-                    'dblclick',
+                    `${this.pointerType}`,
                     this.listenerToReverseAnimation,
                     false
                   );
@@ -378,54 +382,89 @@ export default class Controls implements OnDestroy {
             );
           break;
         case 'SnakeFace':
+          let quat = new Quaternion(
+            -4.7594873874070785e-18,
+            0.9969745769424118,
+            0.07772832772225949,
+            6.104708622419056e-17
+          );
+          let posZ = -2.65;
+          let posY = -1;
+          if (this.pointerType === 'click') {
+            posZ = -3.25;
+            posY = 0;
+          }
           this.timeline.to(
             this.camera.position,
             {
               x: 0,
-              y: -1,
-              z: -2.65,
+              y: posY,
+              z: posZ,
               duration: 2,
               ease: 'power2',
               onUpdate: () => {
-                this.camera.lookAt(0, 0, 0);
+                if (this.pointerType === 'click') {
+                  this.camera.quaternion.slerp(quat, 0.05);
+                } else {
+                  this.camera.lookAt(0, 0, 0);
+                }
               },
               onComplete: () => {
                 this.callSnakeGameRunner();
-                this.orbitControls.target = new THREE.Vector3(0, 0, 0);
+                if (this.pointerType === 'click') {
+                  this.orbitControls.target = new THREE.Vector3(0, -0.8, 0);
+                } else {
+                  this.orbitControls.target = new THREE.Vector3(0, 0, 0);
+                }
                 this.orbitControls.maxAzimuthAngle = Math.PI;
                 this.orbitControls.minAzimuthAngle = Math.PI;
                 this.orbitControls.maxPolarAngle = Math.PI * 0.65;
-                this.orbitControls.minPolarAngle = Math.PI * 0.55;
+                this.orbitControls.minPolarAngle = Math.PI * 0.45;
                 this.orbitControls.update();
                 this.orbitControls.enabled = true;
                 this.listenerToReverseAnimation = () => {
-                  this.experience.world.cubeWorld.snakeGame.startGame = false;
-                  this.orbitControls.maxPolarAngle = Math.PI;
-                  this.orbitControls.minPolarAngle = 0;
-                  this.orbitControls.maxAzimuthAngle = Infinity;
-                  this.orbitControls.minAzimuthAngle = Infinity;
-                  this.orbitControls.update();
-                  this.orbitControls.enabled = false;
-                  gsap.to(this.camera.position, {
-                    x: 0,
-                    y: -1,
-                    z: -2.65,
-                    ease: 'power2',
-                    onUpdate: () => {
-                      this.camera.lookAt(0, 0, 0);
-                    },
-                    onComplete: () => {
-                      window.removeEventListener(
-                        'dblclick',
-                        this.listenerToReverseAnimation,
-                        false
-                      );
-                      this.timeline.reverse();
-                    },
-                  });
+                  this.raycaster.setFromCamera(this.pointer, this.camera);
+                  if (this.raycaster.intersectObjects(this.scene.children)[0]) {
+                    if (
+                      this.raycaster.intersectObjects(this.scene.children)[0]
+                        .object.name !== 'WorldCube_6'
+                    ) {
+                      return;
+                    } else {
+                      this.experience.world.cubeWorld.snakeGame.startGame =
+                        false;
+                      this.orbitControls.maxPolarAngle = Math.PI;
+                      this.orbitControls.minPolarAngle = 0;
+                      this.orbitControls.maxAzimuthAngle = Infinity;
+                      this.orbitControls.minAzimuthAngle = Infinity;
+                      this.orbitControls.update();
+                      this.orbitControls.enabled = false;
+                      gsap.to(this.camera.position, {
+                        x: 0,
+                        y: 0,
+                        z: posZ,
+                        ease: 'power2',
+                        onUpdate: () => {
+                          if (this.pointerType === 'click') {
+                            this.camera.quaternion.slerp(quat, 0.05);
+                          } else {
+                            this.camera.lookAt(0, 0, 0);
+                          }
+                        },
+                        onComplete: () => {
+                          window.removeEventListener(
+                            `${this.pointerType}`,
+                            this.listenerToReverseAnimation,
+                            false
+                          );
+                          this.timeline.reverse();
+                        },
+                      });
+                    }
+                  }
                 };
                 window.addEventListener(
-                  'dblclick',
+                  `${this.pointerType}`,
                   this.listenerToReverseAnimation,
                   false
                 );
@@ -508,7 +547,7 @@ export default class Controls implements OnDestroy {
                       onComplete: () => {
                         // Removemos el event listener
                         window.removeEventListener(
-                          'dblclick',
+                          `${this.pointerType}`,
                           this.listenerToReverseAnimation,
                           false
                         );
@@ -519,7 +558,7 @@ export default class Controls implements OnDestroy {
                   };
                   // Seteamos el event listener para dispara la callback de retorno a la posicion inicial
                   window.addEventListener(
-                    'dblclick',
+                    `${this.pointerType}`,
                     this.listenerToReverseAnimation,
                     false
                   );
@@ -566,7 +605,6 @@ export default class Controls implements OnDestroy {
                 this.orbitControls.minAzimuthAngle = Infinity;
                 this.orbitControls.update();
                 this.orbitControls.enabled = true;
-                console.log(this.camera.quaternion);
                 this.listenerToReverseAnimation = () => {
                   this.orbitControls.target = new THREE.Vector3(0, 0, 0);
                   this.orbitControls.maxPolarAngle = Math.PI;
@@ -585,7 +623,7 @@ export default class Controls implements OnDestroy {
                     },
                     onComplete: () => {
                       window.removeEventListener(
-                        'dblclick',
+                        `${this.pointerType}`,
                         this.listenerToReverseAnimation,
                         false
                       );
@@ -594,7 +632,7 @@ export default class Controls implements OnDestroy {
                   });
                 };
                 window.addEventListener(
-                  'dblclick',
+                  `${this.pointerType}`,
                   this.listenerToReverseAnimation,
                   false
                 );
@@ -707,7 +745,10 @@ export default class Controls implements OnDestroy {
   }
 
   setMouseMoveListener() {
-    window.addEventListener('pointermove', this.onPointerMove.bind(this));
+    window.addEventListener(
+      `${this.pointerType === 'dblclick' ? 'pointermove' : 'click'}`,
+      this.onPointerMove.bind(this)
+    );
   }
 
   resize() {}
@@ -722,6 +763,10 @@ export default class Controls implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    window.removeEventListener('click', this.onClickCallback);
+    window.removeEventListener(`${this.pointerType}`, this.onClickCallback);
+    window.removeEventListener(
+      `${this.pointerType === 'dblclick' ? 'pointermove' : 'click'}`,
+      this.onPointerMove.bind(this)
+    );
   }
 }
